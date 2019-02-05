@@ -1,0 +1,9 @@
+sudo: required
+language: python
+
+services:
+  - docker
+
+before_install:
+  - sudo apt-get update
+  - chmod +x nginx/nginx.sh
