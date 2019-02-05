@@ -12,3 +12,6 @@ script:
   - nginx/nginx.sh
   - docker ps
   - docker stop $(docker ps -aq)
+
+install:
+  - pip install -r requirements.txt
