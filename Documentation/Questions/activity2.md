@@ -1,0 +1,5 @@
+# Questions - Activity 2
+
+- What Web Application security mechanisms are involved in your topology? What security mechanisms would ideally be involved?
+- What testing framework did you choose and why?
+
