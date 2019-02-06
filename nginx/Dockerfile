@@ -1,7 +1,6 @@
 #
 # Drew Gallis
 # CSEC 380
-# HW 1
 # Nginx Dockerfile Config File
 #
 
