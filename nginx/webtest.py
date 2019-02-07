@@ -1,10 +1,12 @@
-from selenium.webdriver import Firefox
+from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
 def webtest():
-    options = Options()
-    options.add_argument('-headless')
-    firefox = Firefox(firefox_options=options)
-    firefox.get('http://localhost')
+    firefox_opts = Options()  
+    firefox_opts.headless = True
+    driver = webdriver.Firefox(firefox_opts)
+    driver.get('http://localhost')
+    print driver.title
+    driver.quit()
 
 webtest()

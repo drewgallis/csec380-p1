@@ -1,10 +1,8 @@
 sudo: required
 language: python
 
-env:
-  - MOZ_HEADLESS=1
-addons:
-  firefox: latest
+services:
+  - docker
 
 before_install:
   - chmod +x nginx/nginx.sh
