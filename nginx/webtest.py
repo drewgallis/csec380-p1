@@ -4,7 +4,7 @@ from selenium.webdriver.firefox.options import Options
 def webtest():
     opts = Options()
     opts.set_headless()
-    asset opts.headless  #checking for headless mode
+    assert opts.headless  #checking for headless mode
     firefox = Firefox(firefox_options=options)
     firefox.get('http://localhost')
 webtest()
