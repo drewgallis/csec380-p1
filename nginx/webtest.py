@@ -7,8 +7,8 @@ def webtest():
     soup = BeautifulSoup(req.content, 'html.parser')
     textContent = []
     for i in range(0, 20):
-    paragraphs = soup.find_all("p")[i].text
-    textContent.append(paragraphs)
+        paragraphs = soup.find_all("p")[i].text
+        textContent.append(paragraphs)
     print(paragraphs)
     
 webtest()
