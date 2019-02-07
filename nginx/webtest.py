@@ -1,14 +1,10 @@
-import pytest
-import requests
-from bs4 import BeautifulSoup
+from selenium.webdriver import Firefox
+from selenium.webdriver.firefox.options import Options
 
 def webtest():
-    req = requests.get('http://localhost:81')
-    soup = BeautifulSoup(req.content, 'html.parser')
-    textContent = []
-    for i in range(0, 1):
-        paragraphs = soup.find_all("p")[i].text
-        textContent.append(paragraphs)
-    print(paragraphs)
-    
+    opts = Options()
+    opst.set_headless()
+    asset opts.headless  #checking for headless mode
+    firefox = Firefox(firefox_options=options)
+    firefox.get('http://localhost')
 webtest()
