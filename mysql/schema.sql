@@ -1,11 +1,4 @@
-﻿-- Exported from QuickDBD: https://www.quickdatatabasediagrams.com/
--- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
-
--- Exported from QuickDBD: https://www.quickdatatabasediagrams.com/
--- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
--- Modify this code to update the DB schema diagram.
--- To reset the sample schema, replace everything with
--- two dots ('..' - without quotes).
+﻿-- schema created from db documentation
 
 CREATE TABLE `User` (
     `id` int  NOT NULL ,
