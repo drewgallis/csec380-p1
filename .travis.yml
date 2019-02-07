@@ -14,7 +14,7 @@ script:
   - docker-compose --version
   - docker-compose up --build -d
   - docker ps
-  - pytest webtest.py
+  - pytest nginx/webtest.py
 
 install:
   - pip install -r requirements.txt
