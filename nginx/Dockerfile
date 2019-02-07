@@ -5,26 +5,13 @@
 #
 
 # Pull base image.
-FROM ubuntu
+FROM nginx:alpine
 
 # File Author / Maintainer
 MAINTAINER Drew Gallis
 
-# Finding and Installing Proper Libraries
-RUN apt-get update
-RUN apt-get install -y software-properties-common
-
 # Install Nginx and related directories.
-RUN add-apt-repository -y ppa:nginx/stable
-RUN apt-get update
-RUN apt-get install -y vim
-RUN apt-get install -y nginx 
-RUN rm -rf /var/lib/apt/lists/*
-RUN echo "\ndaemon off;" >> /etc/nginx/nginx.conf 
-RUN chown -R www-data:www-data /var/lib/nginx
-RUN rm -rf /var/www/html/index.nginx-debian.html
-ADD index.html /var/www/html/
-RUN mkdir /etc/nginx/logs
+COPY index.html /usr/share/nginx/html/
 
 
 # Defining Voulmes needed for nginx to work properly
