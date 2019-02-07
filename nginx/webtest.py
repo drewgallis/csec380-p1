@@ -5,6 +5,6 @@ def webtest():
     opts = Options()
     opts.set_headless()
     assert opts.headless  #checking for headless mode
-    firefox = Firefox(firefox_options=options)
+    firefox = Firefox(firefox_options=opts)
     firefox.get('http://localhost')
 webtest()
