@@ -5,16 +5,19 @@ services:
   - docker
 
 before_install:
-  - sudo apt-get update
   - chmod +x nginx/nginx.sh
-
-script:
+  - wget https://github.com/mozilla/geckodriver/releases/download/v0.21.0/geckodriver-v0.21.0-linux64.tar.gz
+  - tar -xvzf geckodriver-v0.21.0-linux64.tar.gz
+  - chmod +x geckodriver
+  - sudo mv geckodriver /usr/local/bin
   - curl -L https://github.com/docker/compose/releases/download/1.23.2/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - docker-compose --version
+
+script:
   - docker-compose up --build -d
   - docker ps
-  - pytest nginx/webtest.py
+  - python nginx/webtest.py
 
 install:
   - pip install -r requirements.txt
