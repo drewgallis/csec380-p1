@@ -1,6 +1,6 @@
 Load Balancer - Traefik
-Webserver (2) - Nginx
-Authentication Server - FLASK (https://pythonspot.com/login-authentication-with-flask/)
+Webserver - Nginx
+Authentication Server - FLASK 
 Database - MySQL 
 Frontend Language - Javascript 
-Bakend Language - Python/Node
+Bakend Language - Python/MySQL
