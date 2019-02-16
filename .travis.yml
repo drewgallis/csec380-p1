@@ -16,11 +16,10 @@ before_install:
   - curl -L https://github.com/docker/compose/releases/download/1.23.2/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - docker-compose --version
+  - pip install -r requirements.txt
 
 script:
   - docker-compose up --build -d
   - docker ps
   - python nginx/webtest.py
-
-install:
-  - pip install -r requirements.txt
+  - curl http://0.0.0.0:5000/
