@@ -20,6 +20,7 @@ before_install:
 
 script:
   - docker-compose up --build -d
-  - docker ps
+  - docker-compose ps
   - python nginx/webtest.py
   - python flask/flasktest.py
+  - docker-compose logs
