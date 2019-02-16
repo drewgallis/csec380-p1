@@ -25,10 +25,11 @@ This project is created by Drew Gallis, Nicholas Graca and Zack Cogswell for the
 
 [Database Schema](https://github.com/drewgallis/csec380-p1/blob/master/Documentation/Software%20Diagrams/database_schema.png) - What our database tables look like, how they link adn the attributes within them.
 
-## MySQL
+## [MySQL](https://github.com/drewgallis/csec380-p1/tree/master/mysql)
+[schema](https://github.com/drewgallis/csec380-p1/blob/master/mysql/schema.sql) - The configureation of our SQL server.
 
-## Nginx
+## [Nginx](https://github.com/drewgallis/csec380-p1/tree/master/nginx)
 
-## Travis
+## [Travis]()
 
-## Docker
+## [Docker]()
