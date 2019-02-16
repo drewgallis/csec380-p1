@@ -25,8 +25,11 @@ This project is created by Drew Gallis, Nicholas Graca and Zack Cogswell for the
 
 [Database Schema](https://github.com/drewgallis/csec380-p1/blob/master/Documentation/Software%20Diagrams/database_schema.png) - What our database tables look like, how they link adn the attributes within them.
 
+## [Flask](https://github.com/drewgallis/csec380-p1/tree/master/flask)
+[Configuration](https://github.com/drewgallis/csec380-p1/blob/master/flask/app.py) - The script used to set up Flask.
+
 ## [MySQL](https://github.com/drewgallis/csec380-p1/tree/master/mysql)
-[schema](https://github.com/drewgallis/csec380-p1/blob/master/mysql/schema.sql) - The configureation of our SQL server.
+[Schema](https://github.com/drewgallis/csec380-p1/blob/master/mysql/schema.sql) - The configureation of our SQL server.
 
 ## [Nginx](https://github.com/drewgallis/csec380-p1/tree/master/nginx)
 
