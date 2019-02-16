@@ -22,4 +22,4 @@ script:
   - docker-compose up --build -d
   - docker ps
   - python nginx/webtest.py
-  - curl http://localhost:5000/
+  - python flask/flasktest.py
