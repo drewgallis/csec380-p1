@@ -1,14 +1,13 @@
-from flask import Flask
- 
+from flask import Flask,request, render_template, session
+import requests, socket, os 
 app = Flask(__name__)
  
  
 @app.route('/', methods=['GET', 'POST'])
 def login():
     session['logged_in'] = False
-    ip = user_ip()
     host = socket.gethostname() 
-    
+    ip = "test"
     if request.method == 'POST':
         if request.form['user'] == 'admin' and request.form['password'] == '19970902':
             session['logged_in'] = True

@@ -6,7 +6,7 @@
 
 
 FROM python:latest
-COPY . /app
+COPY ./ /app
 WORKDIR /app
 ENTRYPOINT ["python"]
 CMD ["app.py"]
