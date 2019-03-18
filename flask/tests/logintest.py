@@ -18,6 +18,7 @@ def initDB():
     sql = "INSERT INTO `User` (`username`, `password`) VALUES (%s, %s)"
     cursor.execute(sql, ('test123', get_hash("test")))
     connection.commit()
+    print("DB Added User:test123 " + "password:" + get_hash('test'))
     cursor.close()
     connection.close()
     
@@ -33,5 +34,7 @@ def webtest():
     password.send_keys(get_hash("test"))
     loginbtn = firefox.find_element_by_id('Login')
     loginbtn.click()
+    assert "No results found." not in firefox.page_source
+    print(firefox.page_source)
     firefox.close()
 webtest()
