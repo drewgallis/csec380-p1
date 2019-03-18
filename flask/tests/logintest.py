@@ -27,11 +27,11 @@ def webtest():
     options.add_argument('-headless') # run tests in headless mode CMD
     firefox = Firefox(firefox_options=options) # intialize firefox web driver
     firefox.get('http://localhost:5000/login') # test against flask app
-    user = driver.find_element_by_name('username')
+    user = firefox.find_element_by_name('username')
     user.send_keys('test123')
-    password = driver.find_element_by_name('password')
+    password = firefox.find_element_by_name('password')
     password.send_keys(get_hash("test"))
-    loginbtn = browser.find_element_by_id('Login')
+    loginbtn = firefox.find_element_by_id('Login')
     loginbtn.click()
     firefox.close()
 webtest()
