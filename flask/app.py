@@ -19,13 +19,10 @@ def sqltest():
         sql = "INSERT INTO `User` (`username`, `password`) VALUES (%s, %s)"
         cursor.execute(sql, ('test123', 'testing'))
         cursor.execute(sql, ('admin', 'gotcha'))
-        # connection is not autocommit by default. So you must commit to save
-        # your changes.
         connection.commit()
     sql = "SELECT `id`, `password` FROM `User` WHERE `username`=%s"
     cursor.execute(sql, ('test123',))
     result = cursor.fetchone()
-    print(result)
     cursor.close()
     connection.close()
     return render_template('test.html', result=result)
@@ -57,20 +54,24 @@ def adduser():
     return render_template('newuser.html', output=output)
 
 @app.route('/', methods=['GET', 'POST'])
-def main():
-    session['logged_in'] = True
-    host = socket.gethostname()
-    ip = "test"
-    return render_template('index.html', ip=ip, host=host)
+def mainpage():
+    if not session['logged_in']:
+        return redirect('/login')
+    else:
+        host = socket.gethostname()
+        ip = "test"
+        return render_template('index.html', ip=ip, host=host)
 
 #CSFR TOKEN PYTHON: http://flask.pocoo.org/snippets/3/
 @app.route('/login', methods=['GET', 'POST'])
-def logintest():
+def login():
     session['logged_in'] = False
+    session['username'] = None
     if request.method == 'POST':
         if request.form['Button'] == 'Login':
             username  = request.form['username']
             password  = request.form['password']
+            session['username'] = username
             if not ifExists(username):
                 output = "Username Supplied was invalid"
                 return render_template('login.html', output=output)
@@ -97,7 +98,7 @@ def logintest():
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return redirect(url_for('index'))
+    return redirect('/login')
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(12)
