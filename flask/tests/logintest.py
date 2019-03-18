@@ -22,7 +22,22 @@ def initDB():
     print("DB Added User:test123 " + "password:" + pw_hash)
     cursor.close()
     connection.close()
-    
+
+def valid_webtest():
+    options = Options() # get firefox webdriver options
+    options.add_argument('-headless') # run tests in headless mode CMD
+    firefox = Firefox(firefox_options=options) # intialize firefox web driver
+    firefox.get('http://localhost:5000/login') # test against flask app
+    user = firefox.find_element_by_name('username')
+    user.send_keys('test123')
+    password = firefox.find_element_by_name('test')
+    password.send_keys(str(password))
+    loginbtn = firefox.find_element_by_id('Login')
+    loginbtn.click()
+    if "Main Page" in firefox.page_source:
+        print("Success Caught: Valid User Login!")
+    firefox.close()
+
 def webtest(username, password):
     options = Options() # get firefox webdriver options
     options.add_argument('-headless') # run tests in headless mode CMD
@@ -34,7 +49,6 @@ def webtest(username, password):
     password.send_keys(str(password))
     loginbtn = firefox.find_element_by_id('Login')
     loginbtn.click()
-    print(firefox.page_source)
     if "Main Page" in firefox.page_source:
         print("Success Caught: Valid User Login!")
     if "Username Supplied was invalid" in firefox.page_source:
@@ -45,7 +59,7 @@ def webtest(username, password):
 
 def main():
     initDB()
-    webtest('test123','test')       # valid user
+    valid_webtest()       # valid user
     webtest("test123","1234")       # invalid password
     webtest("test","test")          # invalid username
 
