@@ -8,6 +8,7 @@ addons:
   firefox: latest
 
 before_install:
+  - sudo /etc/init.d/mysql stop
   - chmod +x nginx/nginx.sh
   - wget https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux64.tar.gz
   - tar -xvzf geckodriver-v0.24.0-linux64.tar.gz
@@ -20,7 +21,6 @@ before_install:
 
 script:
   - docker-compose up --build -d
-  - sudo netstat -nlpt |grep 3306
   - docker-compose ps
   - python nginx/webtest.py
   - python flask/flasktest.py
