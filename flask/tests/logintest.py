@@ -23,7 +23,7 @@ def initDB():
     cursor.close()
     connection.close()
 
-def valid_webtest():
+def validwebtest():
     options = Options() # get firefox webdriver options
     options.add_argument('-headless') # run tests in headless mode CMD
     firefox = Firefox(firefox_options=options) # intialize firefox web driver
@@ -31,7 +31,7 @@ def valid_webtest():
     user = firefox.find_element_by_name('username')
     user.send_keys('test123')
     password = firefox.find_element_by_name('test')
-    password.send_keys(str(password))
+    password.send_keys('test')
     loginbtn = firefox.find_element_by_id('Login')
     loginbtn.click()
     if "Main Page" in firefox.page_source:
@@ -59,7 +59,7 @@ def webtest(username, password):
 
 def main():
     initDB()
-    valid_webtest()       # valid user
+    validwebtest()       # valid user
     webtest("test123","1234")       # invalid password
     webtest("test","test")          # invalid username
 
