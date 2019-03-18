@@ -57,7 +57,7 @@ def adduser():
 
 @app.route('/', methods=['GET', 'POST'])
 def mainpage():
-    if session.get('logged_in') == True:
+    if session.get('logged_in') == True and session.get('username') != None:
             host = socket.gethostname()
             ip = "test"
             return render_template('index.html', ip=ip, host=host)
@@ -71,7 +71,6 @@ def login():
         if request.form['Button'] == 'Login':
             username  = request.form['username']
             password  = request.form['password']
-            session['username'] = username
             if not ifExists(username):
                 output = "Username Supplied was invalid"
                 return render_template('login.html', output=output)
@@ -85,6 +84,8 @@ def login():
                 cursor.close()
                 connection.close()
                 if check_password(pw_hash, password):
+                    session['username'] = username
+                    session['logged_in'] = True
                     return redirect(url_for('mainpage'))
                 else:
                     output = "Password Supplied was invalid"
