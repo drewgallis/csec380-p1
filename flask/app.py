@@ -1,8 +1,11 @@
 from flask import Flask, request, render_template, session, redirect
 import socket, os, json
+from flask_wtf.csrf import CSRFProtect
+
 from utils import *
 
 app = Flask(__name__)
+csrf = CSRFProtect(app)
 
 @app.route('/testsql', methods=['GET', 'POST'])
 def sqltest():
@@ -54,18 +57,11 @@ def adduser():
     return render_template('newuser.html', output=output)
 
 @app.route('/', methods=['GET', 'POST'])
-def login():
-    session['logged_in'] = False
+def main():
+    session['logged_in'] = True
     host = socket.gethostname()
     ip = "test"
-    if request.method == 'POST':
-        if request.form['username'] == 'admin' and request.form['password'] == '19970902':
-            session['logged_in'] = True
-            return redirect('/testsql')
-        else:
-            session['logged_in'] = False
-
-    return render_template('auth.html', ip=ip, host=host)
+    return render_template('index.html', ip=ip, host=host)
 
 #CSFR TOKEN PYTHON: http://flask.pocoo.org/snippets/3/
 @app.route('/login', methods=['GET', 'POST'])
@@ -89,7 +85,7 @@ def logintest():
                 cursor.close()
                 connection.close()
                 if check_password(pw_hash, password):
-                    return render_template('test.html', result="Sucessful Login")
+                    return redirect('/')
                 else:
                     output = "Username/Password Supplied was invalid"
                     return render_template('login.html', output=output)

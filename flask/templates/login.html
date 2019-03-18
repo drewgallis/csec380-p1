@@ -33,6 +33,7 @@
                             {% endif %}
 							<!-- Form -->
 								<form method="post" action="/login">
+									<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 									<div class="row gtr-uniform">
 										<div class="col-6 col-12-xsmall">
 											<input type="text" name="username" id="username" value="" placeholder="User" />
