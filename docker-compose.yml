@@ -1,10 +1,25 @@
 version: "3"
 services:
   nginx-web1:
+    container_name: nginx-web
     build: ./nginx/
     ports:
       - "81:80"
   flask-login:
+    container_name: flask-app
     build: ./flask/
     ports:
       - "5000:5000"
+    links:
+      - "mariadb"
+  mariadb:
+    image: mariadb
+    container_name: mariadb
+    volumes:
+      - ./data:/var/lib/mysql:rw
+      - ./mysql/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: test123
+      MYSQL_DATABASE: mydb
+    ports:
+      - "3306:3306"
