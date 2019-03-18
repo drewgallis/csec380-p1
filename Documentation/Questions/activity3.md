@@ -1,9 +1,9 @@
 # Questions - Activity 3
 
 - Provide a link to the test cases you generated for this activity.
-	
+	https://github.com/drewgallis/csec380-p1/blob/master/flask/tests/logintest.py
 - How do you ensure that users that navigate to the protected pages cannot bypass authentication requirements?
-	
+	We manage users baseed on session tokens to make sure we can approprately map where they are allowed to go based on the app routes. With this in mind we also have CSFR protections set in place to ensure no users can immitiate another.
 - How do you protect against session fixation?
 	To prevent this our web app will supply a different sessionID cookie after the user has successfully authenticated into our site.
 - How do you ensure that if your database gets stolen passwords aren’t exposed?

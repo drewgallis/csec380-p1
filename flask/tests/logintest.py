@@ -30,7 +30,7 @@ def validwebtest():
     firefox.get('http://localhost:5000/login') # test against flask app
     user = firefox.find_element_by_name('username')
     user.send_keys('test123')
-    password = firefox.find_element_by_name('test')
+    password = firefox.find_element_by_name('password')
     password.send_keys('test')
     loginbtn = firefox.find_element_by_id('Login')
     loginbtn.click()

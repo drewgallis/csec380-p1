@@ -67,7 +67,6 @@ def main():
 @app.route('/login', methods=['GET', 'POST'])
 def logintest():
     session['logged_in'] = False
-
     if request.method == 'POST':
         if request.form['Button'] == 'Login':
             username  = request.form['username']
