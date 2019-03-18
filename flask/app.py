@@ -77,18 +77,22 @@ def logintest():
             username  = request.form['username']
             password  = request.form['password']
             if not ifExists(username):
-                output = "Invalid Credentials Supplied"
+                output = "Username/Password Supplied was invalid"
                 return render_template('login.html', output=output)
             else:
                 connection = getMysqlConnection()
                 cursor = connection.cursor()
                 sql = "SELECT `password` FROM `User` WHERE `username`=%s"
-                cursor.execute(sql, (user.username,))
-                result = cursor.fetchall()
+                cursor.execute(sql, (username,))
+                result = cursor.fetchone()
+                pw_hash = result[0]
                 cursor.close()
                 connection.close()
-                if check_password(result[0],password)
+                if check_password(pw_hash, password):
                     return render_template('test.html', result="Sucessful Login")
+                else:
+                    output = "Username/Password Supplied was invalid"
+                    return render_template('login.html', output=output)
         elif request.form['Button'] == 'CreateUser':
             return redirect('/adduser')
     output = "Insert Valid Username and Password to Login"
