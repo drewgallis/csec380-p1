@@ -73,7 +73,7 @@ def logintest():
             username  = request.form['username']
             password  = request.form['password']
             if not ifExists(username):
-                output = "Username/Password Supplied was invalid"
+                output = "Username Supplied was invalid"
                 return render_template('login.html', output=output)
             else:
                 connection = getMysqlConnection()
@@ -87,7 +87,7 @@ def logintest():
                 if check_password(pw_hash, password):
                     return redirect('/')
                 else:
-                    output = "Username/Password Supplied was invalid"
+                    output = "Password Supplied was invalid"
                     return render_template('login.html', output=output)
         elif request.form['Button'] == 'CreateUser':
             return redirect('/adduser')

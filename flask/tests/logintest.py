@@ -22,19 +22,30 @@ def initDB():
     cursor.close()
     connection.close()
     
-def webtest():
-    initDB()
+def webtest(username, password):
     options = Options() # get firefox webdriver options
     options.add_argument('-headless') # run tests in headless mode CMD
     firefox = Firefox(firefox_options=options) # intialize firefox web driver
     firefox.get('http://localhost:5000/login') # test against flask app
     user = firefox.find_element_by_name('username')
-    user.send_keys('test123')
+    user.send_keys(username)
     password = firefox.find_element_by_name('password')
-    password.send_keys("test")
+    password.send_keys(password)
     loginbtn = firefox.find_element_by_id('Login')
     loginbtn.click()
-    assert "No results found." not in firefox.page_source
-    print(firefox.page_source)
+    if "Main Page" in firefox.page_source:
+        print("Success Caught: Valid User Login!")
+    if "Username Supplied was invalid" in firefox.page_source:
+        print("Error Caught: Username Supplied was invalid")
+    if "Password Supplied was invalid" in firefox.page_source:
+        print("Error Caught: Password Supplied was invalid")
     firefox.close()
-webtest()
+
+def main():
+    initDB()
+    webtest("test123","test")       # valid user
+    webtest("test123","1234")       # invalid password
+    webtest("test","test")          # invalid username
+
+if __name__ == "__main__":
+    main()
