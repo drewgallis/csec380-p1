@@ -20,7 +20,7 @@ before_install:
 
 script:
   - docker-compose up --build -d
-  - netstat -nlpt |grep 3306
+  - sudo netstat -nlpt |grep 3306
   - docker-compose ps
   - python nginx/webtest.py
   - python flask/flasktest.py
