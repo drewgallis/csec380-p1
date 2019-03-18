@@ -16,9 +16,10 @@ def initDB():
     connection = getMysqlConnection()
     cursor = connection.cursor()
     sql = "INSERT INTO `User` (`username`, `password`) VALUES (%s, %s)"
-    cursor.execute(sql, ('test123', get_hash('test')))
+    pw_hash = get_hash('test')
+    cursor.execute(sql, ('test123', pw_hash))
     connection.commit()
-    print("DB Added User:test123 " + "password:" + get_hash("test"))
+    print("DB Added User:test123 " + "password:" + pw_hash)
     cursor.close()
     connection.close()
     
