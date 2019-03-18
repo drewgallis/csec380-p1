@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, session, redirect
+from flask import Flask, request, render_template, session, redirect, url_for
 import socket, os, json
 from flask_wtf.csrf import CSRFProtect
 
@@ -6,25 +6,27 @@ from utils import *
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 @app.route('/testsql', methods=['GET', 'POST'])
 def sqltest():
-    # Connect to the database
-    connection = getMysqlConnection()
-    cursor = connection.cursor()
-    sql = "SELECT `password` FROM `User` WHERE `username`=%s"
-    cursor.execute(sql, ('test123',))
-    result = cursor.fetchone()
-    if not result:
-        sql = "INSERT INTO `User` (`username`, `password`) VALUES (%s, %s)"
-        cursor.execute(sql, ('test123', 'testing'))
-        cursor.execute(sql, ('admin', 'gotcha'))
-        connection.commit()
-    sql = "SELECT `id`, `password` FROM `User` WHERE `username`=%s"
-    cursor.execute(sql, ('test123',))
-    result = cursor.fetchone()
-    cursor.close()
-    connection.close()
+    if session.get('logged_in') == True:
+        # Connect to the database
+        connection = getMysqlConnection()
+        cursor = connection.cursor()
+        sql = "SELECT `password` FROM `User` WHERE `username`=%s"
+        cursor.execute(sql, ('test123',))
+        result = cursor.fetchone()
+        if not result:
+            sql = "INSERT INTO `User` (`username`, `password`) VALUES (%s, %s)"
+            cursor.execute(sql, ('test123', 'testing'))
+            cursor.execute(sql, ('admin', 'gotcha'))
+            connection.commit()
+        sql = "SELECT `id`, `password` FROM `User` WHERE `username`=%s"
+        cursor.execute(sql, ('test123',))
+        result = cursor.fetchone()
+        cursor.close()
+        connection.close()
     return render_template('test.html', result=result)
 
 @app.route('/adduser', methods=['GET', 'POST'])
@@ -55,17 +57,15 @@ def adduser():
 
 @app.route('/', methods=['GET', 'POST'])
 def mainpage():
-    if not session['logged_in']:
-        return redirect('/login')
-    else:
-        host = socket.gethostname()
-        ip = "test"
-        return render_template('index.html', ip=ip, host=host)
+    if session.get('logged_in') == True:
+            host = socket.gethostname()
+            ip = "test"
+            return render_template('index.html', ip=ip, host=host)
+    return redirect(url_for('login'))
 
 #CSFR TOKEN PYTHON: http://flask.pocoo.org/snippets/3/
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    session['logged_in'] = False
     session['username'] = None
     if request.method == 'POST':
         if request.form['Button'] == 'Login':
@@ -85,12 +85,12 @@ def login():
                 cursor.close()
                 connection.close()
                 if check_password(pw_hash, password):
-                    return redirect('/')
+                    return redirect(url_for('mainpage'))
                 else:
                     output = "Password Supplied was invalid"
                     return render_template('login.html', output=output)
         elif request.form['Button'] == 'CreateUser':
-            return redirect('/adduser')
+            return redirect(url_for('adduser'))
     output = "Insert Valid Username and Password to Login"
     return render_template('login.html', output=output)
 
@@ -98,7 +98,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return redirect('/login')
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(12)
