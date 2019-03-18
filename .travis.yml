@@ -8,7 +8,6 @@ addons:
   firefox: latest
 
 before_install:
-  - service mysql stop
   - chmod +x nginx/nginx.sh
   - wget https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux64.tar.gz
   - tar -xvzf geckodriver-v0.24.0-linux64.tar.gz
@@ -20,6 +19,8 @@ before_install:
   - pip install -r requirements.txt
 
 script:
+  - service mysqld stop
+  - docker-compose down
   - docker-compose up --build -d
   - docker-compose ps
   - python nginx/webtest.py
