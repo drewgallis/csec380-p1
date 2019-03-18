@@ -19,9 +19,8 @@ before_install:
   - pip install -r requirements.txt
 
 script:
-  - service mysqld stop
-  - docker-compose down
   - docker-compose up --build -d
+  - netstat -nlpt |grep 3306
   - docker-compose ps
   - python nginx/webtest.py
   - python flask/flasktest.py
