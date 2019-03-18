@@ -16,7 +16,7 @@ def initDB():
     connection = getMysqlConnection()
     cursor = connection.cursor()
     sql = "INSERT INTO `User` (`username`, `password`) VALUES (%s, %s)"
-    cursor.execute(sql, ('test123', get_hash("test")))
+    cursor.execute(sql, ('test123', get_hash('test')))
     connection.commit()
     print("DB Added User:test123 " + "password:" + get_hash("test"))
     cursor.close()
@@ -33,6 +33,7 @@ def webtest(username, password):
     password.send_keys(str(password))
     loginbtn = firefox.find_element_by_id('Login')
     loginbtn.click()
+    print(firefox.page_source)
     if "Main Page" in firefox.page_source:
         print("Success Caught: Valid User Login!")
     if "Username Supplied was invalid" in firefox.page_source:
