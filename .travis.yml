@@ -18,6 +18,7 @@ before_install:
   - chmod +x docker-compose
   - docker-compose --version
   - pip install -r requirements.txt
+  - ifconfig
 
 script:
   - docker-compose up --build -d
