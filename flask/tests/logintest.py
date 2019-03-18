@@ -28,9 +28,9 @@ def webtest(username, password):
     firefox = Firefox(firefox_options=options) # intialize firefox web driver
     firefox.get('http://localhost:5000/login') # test against flask app
     user = firefox.find_element_by_name('username')
-    user.send_keys(username)
+    user.send_keys(str(username))
     password = firefox.find_element_by_name('password')
-    password.send_keys(password)
+    password.send_keys(str(password))
     loginbtn = firefox.find_element_by_id('Login')
     loginbtn.click()
     if "Main Page" in firefox.page_source:
@@ -44,8 +44,8 @@ def webtest(username, password):
 def main():
     initDB()
     webtest('test123','test')       # valid user
-    #webtest("test123","1234")       # invalid password
-    #webtest("test","test")          # invalid username
+    webtest("test123","1234")       # invalid password
+    webtest("test","test")          # invalid username
 
 if __name__ == "__main__":
     main()
