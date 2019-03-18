@@ -1,12 +1,8 @@
 from flask import Flask, request, render_template, session, redirect
 import socket, os, json
-import mysql.connector
+from utils import *
 
 app = Flask(__name__)
-
-def getMysqlConnection():
-    return mysql.connector.connect(user='root', host='172.17.0.1', port='3306', password='test123', database='mydb')
-
 
 @app.route('/testsql', methods=['GET', 'POST'])
 def sqltest():
@@ -34,10 +30,28 @@ def sqltest():
 @app.route('/adduser', methods=['GET', 'POST'])
 def adduser():
     if request.method == 'POST':
-        connection = getMysqlConnection()
-        cursor = connection.cursor()
-        sql = "INSERT INTO `User` (`username`, `password`) VALUES (%s, %s)"
-
+        if request.form['Button'] == 'CreateUser':
+            username = request.form['username']
+            password = request.form['password']
+            pw_hash = get_hash(password)
+            if not ifExists(username):
+                connection = getMysqlConnection()
+                cursor = connection.cursor()
+                sql = "INSERT INTO `User` (`username`, `password`) VALUES (%s, %s)"
+                cursor.execute(sql, (username, pw_hash))
+                connection.commit()
+                cursor.close()
+                connection.close()
+                output = "User " + username + " sucessfully added"
+                return render_template('newuser.html', output=output)
+            else:
+                output = "User " + username + " already exists"
+                return render_template('newuser.html', output=output)
+        elif request.form['Button'] == 'BackToLogin':
+            output = "Insert Valid Username and Password to Login"
+            return render_template('login.html', output=output)
+    output = "Start by Adding Credentials"
+    return render_template('newuser.html', output=output)
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -45,7 +59,7 @@ def login():
     host = socket.gethostname()
     ip = "test"
     if request.method == 'POST':
-        if request.form['user'] == 'admin' and request.form['password'] == '19970902':
+        if request.form['username'] == 'admin' and request.form['password'] == '19970902':
             session['logged_in'] = True
             return redirect('/testsql')
         else:
@@ -60,23 +74,25 @@ def logintest():
 
     if request.method == 'POST':
         if request.form['Button'] == 'Login':
-            connection = getMysqlConnection()
-            cursor = connection.cursor()
-            username_form  = request.form['username']
-            sql = "SELECT `id`, `password` FROM `User` WHERE `username`=%s"
-            cursor.execute(sql, (username_form,))
-            result = cursor.fetchall()
-            cursor.close()
-            connection.close()
-            if len(result) is 0:
-                return render_template('login.html', output="Invalid Credentials Supplied")
+            username  = request.form['username']
+            password  = request.form['password']
+            if not ifExists(username):
+                output = "Invalid Credentials Supplied"
+                return render_template('login.html', output=output)
             else:
-                return render_template('test.html', result=result)
+                connection = getMysqlConnection()
+                cursor = connection.cursor()
+                sql = "SELECT `password` FROM `User` WHERE `username`=%s"
+                cursor.execute(sql, (user.username,))
+                result = cursor.fetchall()
+                cursor.close()
+                connection.close()
+                if check_password(result[0],password)
+                    return render_template('test.html', result="Sucessful Login")
         elif request.form['Button'] == 'CreateUser':
-            redirect('/adduser')
-    else:
-        output = "none"
-        return render_template('login.html', output=output)
+            return redirect('/adduser')
+    output = "Insert Valid Username and Password to Login"
+    return render_template('login.html', output=output)
 
 
 @app.route('/logout')
