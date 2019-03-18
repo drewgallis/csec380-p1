@@ -1,4 +1,5 @@
-# Project Name
+# Flask, MariaDB, Nginx Docker Application 
+[![Build Status](https://travis-ci.org/drewgallis/csec380-p1.svg?branch=master)](https://travis-ci.org/drewgallis/csec380-p1)
 
 This project is created by Drew Gallis, Nicholas Graca and Zack Cogswell for the class CSEC 380.
 
@@ -12,6 +13,8 @@ This project is created by Drew Gallis, Nicholas Graca and Zack Cogswell for the
 [Activity 1 questions](https://github.com/drewgallis/csec380-p1/blob/master/Documentation/Questions/activity1.md) - Answers for act 1 questions.
 
 [Activity 2 questions](https://github.com/drewgallis/csec380-p1/blob/master/Documentation/Questions/activity2.md) - Answers for Act 2 questions
+
+[Activity 3 questions](https://github.com/drewgallis/csec380-p1/blob/master/Documentation/Questions/activity3.md) - Answers for Act 3 questions
 
 ### [Site Mock-Up](https://github.com/drewgallis/csec380-p1/tree/master/Documentation/Site%20Mock-UP)
 [Login Page](https://github.com/drewgallis/csec380-p1/blob/master/Documentation/Site%20Mock-Up/login%20page.pdf) - What we plan our login page to look like.
