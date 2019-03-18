@@ -43,9 +43,9 @@ def webtest(username, password):
 
 def main():
     initDB()
-    webtest("test123","test")       # valid user
-    webtest("test123","1234")       # invalid password
-    webtest("test","test")          # invalid username
+    webtest('test123','test')       # valid user
+    #webtest("test123","1234")       # invalid password
+    #webtest("test","test")          # invalid username
 
 if __name__ == "__main__":
     main()
