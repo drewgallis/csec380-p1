@@ -31,6 +31,7 @@ def webtest():
     user = firefox.find_element_by_name('username')
     user.send_keys('test123')
     password = firefox.find_element_by_name('password')
+    print("password hash inputted by user:" + get_hash("test"))
     password.send_keys(get_hash("test"))
     loginbtn = firefox.find_element_by_id('Login')
     loginbtn.click()
