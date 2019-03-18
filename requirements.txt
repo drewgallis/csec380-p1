@@ -2,3 +2,4 @@ selenium
 Flask
 Flask-WTF
 requests
+mysql-connector
