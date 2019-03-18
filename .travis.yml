@@ -23,5 +23,6 @@ script:
   - docker-compose up --build -d
   - docker-compose ps
   - python nginx/webtest.py
-  - python flask/flasktest.py
+  - python flask/tests/basetest.py
+  - python flask/tests/logintest.py
   - docker-compose logs

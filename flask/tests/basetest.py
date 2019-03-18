@@ -1,5 +1,6 @@
 from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
+import mysql.connector
 
 def webtest():
     options = Options() # get firefox webdriver options
