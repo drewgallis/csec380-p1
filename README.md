@@ -32,7 +32,7 @@ This project is created by Drew Gallis, Nicholas Graca and Zack Cogswell for the
 [Configuration](https://github.com/drewgallis/csec380-p1/blob/master/flask/app.py) - The script used to set up Flask.
 
 ## [MySQL](https://github.com/drewgallis/csec380-p1/tree/master/mysql)
-[Schema](https://github.com/drewgallis/csec380-p1/blob/master/mysql/schema.sql) - The configureation of our SQL server.
+[Schema](https://github.com/drewgallis/csec380-p1/blob/master/mysql/schema.sql) - The configuration of our SQL server.
 
 ## [Nginx](https://github.com/drewgallis/csec380-p1/tree/master/nginx)
 
