@@ -28,13 +28,19 @@
 				<!-- Intro -->
 					<section id="intro" class="wrapper style1 fullscreen fade-up">
 						<div class="inner">
-                            <p>Welcome to the home page!</p>
-                            <form method="post">
-                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                            </form>
+							{% if output %}
+							<p class=output><strong>Console:</strong> {{ output }}
+							{% endif %}
+            	<p>Welcome to the home page!</p>
+							<h1>Upload new File</h1>
+    					<form method=post enctype=multipart/form-data>
+								<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      					<input type=file name=file>
+      					<input type=submit value=Upload>
+    					</form>
 						</div>
-					</section>		
-				
+					</section>
+
 			</div>
 		<!-- Scripts -->
 			<script src="/static/assets/js/jquery.min.js"></script>

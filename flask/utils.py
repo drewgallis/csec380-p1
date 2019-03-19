@@ -1,6 +1,13 @@
 import mysql.connector
 from werkzeug.security import generate_password_hash, check_password_hash
 
+UPLOAD_FOLDER = '/etc/Videos'
+ALLOWED_EXTENSIONS = set(['mp4', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 def get_hash(password):
     return generate_password_hash(password)
 
