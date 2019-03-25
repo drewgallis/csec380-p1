@@ -63,6 +63,9 @@ def adduser():
 def mainpage():
     if session.get('logged_in') == True and session.get('username') != None:
         output = "Upload Files and Videos"
+        dir = '/etc/Videos/' + session.get('username')   #Hopefully adds the username to the path
+        if not os.path.exists(dir):
+            os.mkdir(dir)                               #Creates users dir in Videos if it doesnt exist
         if request.method == 'POST':
             # check if the post request has the file part
             if 'file' not in request.files:
@@ -78,7 +81,7 @@ def mainpage():
                 return render_template('index.html', output=output)
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                file.save(os.path.join(app.config['UPLOAD_FOLDER' + session.get('username')], filename)) #Added the username to upload folder
                 output = "Successfully Uploaded File: " + filename
                 return render_template('index.html', output=output)
         return render_template('index.html', output=output)

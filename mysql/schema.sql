@@ -20,3 +20,11 @@ CREATE TABLE VideoStats (
     time_stamp TIMESTAMP NOT NULL,
     FOREIGN KEY(id) REFERENCES User(id)
 );
+
+-- Create new table to refrence where the videos are for Act 4
+CREATE TABLE Videos (
+    id INT NOT NULL ,
+    username VARCHAR(20) NOT NULL ,
+    vidpath VARCHAR(50) NOT NULL
+    FOREIGN KEY(id) REFERENCES User(id)
+);
