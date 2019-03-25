@@ -82,6 +82,8 @@ def mainpage():
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(p, filename))                #p is path from above
+                sql = "INSERT INTO `Videos` (`username`, `vidpath`) VALUES (%s, %s)"    #Add record of file upload to database
+                cursor.execute(sql, (str(session.get('username')), p))
                 output = "Successfully Uploaded File: " + filename
                 return render_template('index.html', output=output)
         return render_template('index.html', output=output)
