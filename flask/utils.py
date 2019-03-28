@@ -15,11 +15,10 @@ def get_userid(username):
     result = cursor.fetchone()
     cursor.close()
     connection.close()
-    return str(result)
+    return str(result[0])
 
 def download_url(url, path):
     r = requests.get(url, allow_redirects=True)
-
     with open(path, 'wb') as f:
         f.write(r.content)
         return True
