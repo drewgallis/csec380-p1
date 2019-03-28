@@ -33,10 +33,18 @@
 							{% endif %}
             	<p>Welcome to the home page!</p>
 							<h1>Upload new File</h1>
-    					<form method=post enctype=multipart/form-data>
+    					<form method=post enctype=multipart/form-data action="/">
 								<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
       					<input type=file name=file>
-      					<input type=submit value=Upload>
+								<div class="col-6 col-12-xsmall">
+									<input type="text" name="url" id="url" value="" placeholder="Insert URL" />
+								</div>
+								<div class="col-12">
+									<ul class="actions">
+										<li><input type="submit" name= "Type" value="uploadfile" id="UploadFile" class="primary" /></li>
+										<li><input type="submit" name= "Type" value="uploadurl" id="UploadURL" class="primary" /></li>
+									</ul>
+								</div>
     					</form>
 						</div>
 					</section>

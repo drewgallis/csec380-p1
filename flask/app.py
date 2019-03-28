@@ -63,33 +63,54 @@ def adduser():
 def mainpage():
     if session.get('logged_in') == True and session.get('username') != None:
         output = "Upload Files and Videos"
-        p = str(app.config['UPLOAD_FOLDER']) + str(session.get('username')) #make user specific path in Videos
-        if os.path.exists(p) != True:
-            os.mkdir(p)                 #Create user specific dir for user if it doesnt already exist
         if request.method == 'POST':
-            # check if the post request has the file part
-            if 'file' not in request.files:
-                output = "No file part"
-                return render_template('index.html', output=output)
-            file = request.files['file']
-            # if user does not select file, browser also
-            # submit an empty part without filename
-            if file.filename == '':
-                output = "No selected file"
-                return render_template('index.html', output=output)
-            if file.filename[3] == 'http' or file.filename == "https":
-                url = file.filename
-                download_url(file.filename)
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(p, filename))                #p is path from above
-                timestamp = get_timestamp()
-                sql = "INSERT INTO `VideosStats` (`username`, `video_name`,`time_stamp`) VALUES (%s, %s, %s)"    #Add record of file upload to database
-                connection = getMysqlConnection()
-                cursor = connection.cursor()
-                cursor.execute(sql, (str(session.get('username')), p, time()))
-                output = "Successfully Uploaded File: " + filename
-                return render_template('index.html', output=output)
+            if request.form['Type'] == 'uploadfile':
+                p = str(app.config['UPLOAD_FOLDER']) + str(session.get('username')) #make user specific path in Videos
+                if os.path.exists(p) != True:
+                    os.mkdir(p)                 #Create user specific dir for user if it doesnt already exist
+                    # check if the post request has the file part
+                    if 'file' not in request.files:
+                        output = "No file part"
+                        return render_template('index.html', output=output)
+                    file = request.files['file']
+                if file.filename == '':
+                    output = "No selected file"
+                    return render_template('index.html', output=output)
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    file.save(os.path.join(p, filename))                #p is path from above
+                    timestamp = get_timestamp()
+                    sql = "INSERT INTO `VideosStats` (`username`, `video_name`,`time_stamp`) VALUES (%s, %s, %s)"    #Add record of file upload to database
+                    connection = getMysqlConnection()
+                    cursor = connection.cursor()
+                    cursor.execute(sql, (str(session.get('username')), p, time()))
+                    output = "Successfully Uploaded File: " + filename
+                    return render_template('index.html', output=output)
+            if request.form['Type'] == 'uploadurl':
+                p = str(app.config['UPLOAD_FOLDER']) + str(session.get('username')) #make user specific path in Videos
+                if os.path.exists(p) != True:
+                    os.mkdir(p)                 #Create user specific dir for user if it doesnt already exist
+                    if 'url' not in request.form:
+                        output = "No file part"
+                        return render_template('index.html', output=output)
+                url = request.form['url']
+                if url == '':
+                    output = "No selected file"
+                    return render_template('index.html', output=output)
+                if url and allowed_file(url):
+                    url = secure_filename(url)
+                    path = os.path.join(p, url)
+                    url.save(path)                #p is path from above
+                    timestamp = get_timestamp()
+                    sql = "INSERT INTO `VideosStats` (`username`, `video_name`,`time_stamp`) VALUES (%s, %s, %s)"    #Add record of file upload to database
+                    connection = getMysqlConnection()
+                    cursor = connection.cursor()
+                    cursor.execute(sql, (str(session.get('username')), p, time()))
+                    if download_url(url.filename, path):
+                        output = "Successfully uploaded url: " + url.filename
+                        return render_template('index.html', output=output)
+                    output = "Could not upload url: " + url.filename
+                    return render_template('index.html', output=output)
         return render_template('index.html', output=output)
     else:
         return redirect(url_for('login'))
