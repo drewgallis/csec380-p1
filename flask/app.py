@@ -69,14 +69,12 @@ def mainpage():
         if request.method == 'POST':
             # check if the post request has the file part
             if 'file' not in request.files:
-                flash('No file part')
                 output = "No file part"
                 return render_template('index.html', output=output)
             file = request.files['file']
             # if user does not select file, browser also
             # submit an empty part without filename
             if file.filename == '':
-                flash('No selected file')
                 output = "No selected file"
                 return render_template('index.html', output=output)
             if file.filename[3] == 'http' or file.filename == "https":
