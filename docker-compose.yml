@@ -16,7 +16,7 @@ services:
     image: mariadb
     container_name: mariadb
     volumes:
-      - ./data:/var/lib/mysql:rw
+      - ./mysql/data:/var/lib/mysql:rw
       - ./mysql/schema.sql:/docker-entrypoint-initdb.d/schema.sql
     environment:
       MYSQL_ROOT_PASSWORD: test123

@@ -7,6 +7,16 @@ from werkzeug.security import generate_password_hash, check_password_hash
 UPLOAD_FOLDER = '/etc/Videos'
 ALLOWED_EXTENSIONS = set(['mp4', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'mov'])
 
+def get_userid(username):
+    connection = getMysqlConnection()
+    cursor = connection.cursor()
+    sql = "SELECT `id` FROM `User` WHERE `username`=%s"
+    cursor.execute(sql, (username,))
+    result = cursor.fetchone()
+    cursor.close()
+    connection.close()
+    return str(result)
+
 def download_url(url, path):
     r = requests.get(url, allow_redirects=True)
 
@@ -29,7 +39,7 @@ def is_downloadable(url):
     return True
 
 def get_timestamp():
-    return datetime.now()
+    return datetime.datetime.utcnow()
 
 def allowed_file(filename):
     return '.' in filename and \

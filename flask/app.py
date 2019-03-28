@@ -64,6 +64,7 @@ def mainpage():
     if session.get('logged_in') == True and session.get('username') != None:
         output = "Upload Files and Videos"
         if request.method == 'POST':
+            userid = get_userid(session.get('username'))
             if request.form['Type'] == 'uploadfile':
                 p = str(app.config['UPLOAD_FOLDER']) + str(session.get('username')) #make user specific path in Videos
                 if os.path.exists(p) != True:
@@ -80,10 +81,13 @@ def mainpage():
                     filename = secure_filename(file.filename)
                     file.save(os.path.join(p, filename))                #p is path from above
                     timestamp = get_timestamp()
-                    sql = "INSERT INTO `VideosStats` (`username`, `video_name`,`time_stamp`) VALUES (%s, %s, %s)"    #Add record of file upload to database
+                    sql = "INSERT INTO `VideoStats` (`id`,`username`, `video_name`,`time_stamp`) VALUES (%s, %s, %s, %s)"    #Add record of file upload to database
                     connection = getMysqlConnection()
                     cursor = connection.cursor()
-                    cursor.execute(sql, (str(session.get('username')), p, time()))
+                    cursor.execute(sql, (userid, str(session.get('username')), filename, timestamp))
+                    connection.commit()
+                    cursor.close()
+                    connection.close()
                     output = "Successfully Uploaded File: " + filename
                     return render_template('index.html', output=output)
             if request.form['Type'] == 'uploadurl':
@@ -103,16 +107,18 @@ def mainpage():
                 if url and allowed_file(url):
                     filename = secure_filename(filename)
                     path = os.path.join(p, filename)
-                    url.save(path)                #p is path from above
                     timestamp = get_timestamp()
-                    sql = "INSERT INTO `VideosStats` (`username`, `video_name`,`time_stamp`) VALUES (%s, %s, %s)"    #Add record of file upload to database
+                    sql = "INSERT INTO `VideoStats` (`id`,`username`, `video_name`,`time_stamp`) VALUES (%s, %s, %s, %s)"    #Add record of file upload to database
                     connection = getMysqlConnection()
                     cursor = connection.cursor()
-                    cursor.execute(sql, (str(session.get('username')), p, time()))
+                    cursor.execute(sql, (userid, str(session.get('username')), filename, timestamp))
+                    connection.commit()
+                    cursor.close()
+                    connection.close()
                     if download_url(url, path):
-                        output = "Successfully uploaded url: " + url.filename
+                        output = "Successfully uploaded url: " + filename
                         return render_template('index.html', output=output)
-                    output = "Could not upload url: " + url.filename
+                    output = "Could not upload url: " + filename
                     return render_template('index.html', output=output)
         return render_template('index.html', output=output)
     else:

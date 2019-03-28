@@ -17,6 +17,5 @@ CREATE TABLE VideoStats (
     username VARCHAR(20) NOT NULL ,
     url VARCHAR(255) ,
     video_name VARCHAR(100) NOT NULL ,
-    time_stamp TIMESTAMP NOT NULL,
-    FOREIGN KEY(id) REFERENCES User(id)
+    time_stamp TIMESTAMP NOT NULL
 );
