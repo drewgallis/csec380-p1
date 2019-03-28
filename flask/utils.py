@@ -3,19 +3,30 @@ import datetime
 from flask import request
 import requests
 from werkzeug.security import generate_password_hash, check_password_hash
-import urllib2
 
 UPLOAD_FOLDER = '/etc/Videos'
 ALLOWED_EXTENSIONS = set(['mp4', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'mov'])
 
 def download_url(url, path):
-    filedata = urllib2.urlopen(url)
-    datatowrite = filedata.read()
+    r = requests.get(url, allow_redirects=True)
 
     with open(path, 'wb') as f:
-        f.write(datatowrite)
+        f.write(r.content)
         return True
     return False
+
+def is_downloadable(url):
+    """
+    Does the url contain a downloadable resource
+    """
+    h = requests.head(url, allow_redirects=True)
+    header = h.headers
+    content_type = header.get('content-type')
+    if 'text' in content_type.lower():
+        return False
+    if 'html' in content_type.lower():
+        return False
+    return True
 
 def get_timestamp():
     return datetime.now()

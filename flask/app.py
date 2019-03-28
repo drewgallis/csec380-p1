@@ -94,19 +94,22 @@ def mainpage():
                         output = "No file part"
                         return render_template('index.html', output=output)
                 url = request.form['url']
-                if url == '':
-                    output = "No selected file"
+                filename = None
+                if url.find('/'):
+	                filename = url.rsplit('/', 1)[1]
+                if url == '' or filename is None:
+                    output = "No URL inputted or incorrect format"
                     return render_template('index.html', output=output)
                 if url and allowed_file(url):
-                    url = secure_filename(url)
-                    path = os.path.join(p, url)
+                    filename = secure_filename(filename)
+                    path = os.path.join(p, filename)
                     url.save(path)                #p is path from above
                     timestamp = get_timestamp()
                     sql = "INSERT INTO `VideosStats` (`username`, `video_name`,`time_stamp`) VALUES (%s, %s, %s)"    #Add record of file upload to database
                     connection = getMysqlConnection()
                     cursor = connection.cursor()
                     cursor.execute(sql, (str(session.get('username')), p, time()))
-                    if download_url(url.filename, path):
+                    if download_url(url, path):
                         output = "Successfully uploaded url: " + url.filename
                         return render_template('index.html', output=output)
                     output = "Could not upload url: " + url.filename
