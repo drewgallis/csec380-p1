@@ -15,15 +15,8 @@ CREATE TABLE User (
 CREATE TABLE VideoStats (
     id INT NOT NULL ,
     username VARCHAR(20) NOT NULL ,
-    url VARCHAR(255) NOT NULL ,
+    url VARCHAR(255) ,
     video_name VARCHAR(100) NOT NULL ,
     time_stamp TIMESTAMP NOT NULL,
-    FOREIGN KEY(id) REFERENCES User(id)
-);
-
-CREATE TABLE Videos (
-    id INT NOT NULL ,
-    username VARCHAR(20) NOT NULL ,
-    vidPath VARCHAR(50) NOT NULL,
     FOREIGN KEY(id) REFERENCES User(id)
 );

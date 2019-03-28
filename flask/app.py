@@ -79,11 +79,17 @@ def mainpage():
                 flash('No selected file')
                 output = "No selected file"
                 return render_template('index.html', output=output)
+            if file.filename[3] == 'http' or file.filename == "https":
+                url = file.filename
+                download_url(file.filename)
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(p, filename))                #p is path from above
-                sql = "INSERT INTO `Videos` (`username`, `vidpath`) VALUES (%s, %s)"    #Add record of file upload to database
-                cursor.execute(sql, (str(session.get('username')), p))
+                timestamp = get_timestamp()
+                sql = "INSERT INTO `VideosStats` (`username`, `video_name`,`time_stamp`) VALUES (%s, %s, %s)"    #Add record of file upload to database
+                connection = getMysqlConnection()
+                cursor = connection.cursor()
+                cursor.execute(sql, (str(session.get('username')), p, time()))
                 output = "Successfully Uploaded File: " + filename
                 return render_template('index.html', output=output)
         return render_template('index.html', output=output)

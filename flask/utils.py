@@ -1,8 +1,23 @@
 import mysql.connector
+import datetime as *
+from flask import request
+import requests
 from werkzeug.security import generate_password_hash, check_password_hash
 
 UPLOAD_FOLDER = '/etc/Videos'
-ALLOWED_EXTENSIONS = set(['mp4', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['mp4', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'mov'])
+
+def download_url(url):
+    if file and allowed_file(url):
+        url = requests.args['url']
+        r = requests.get(url)
+        with app.open_instance_resource('downloade_file', 'wb') as f:
+            f.write(r.connect)
+        f.close()
+    return
+    
+def get_timestamp():
+    return datetime.now()
 
 def allowed_file(filename):
     return '.' in filename and \
