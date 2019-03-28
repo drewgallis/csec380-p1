@@ -3,4 +3,3 @@ Flask
 Flask-WTF
 requests
 mysql-connector
-urllib2
