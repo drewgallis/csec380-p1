@@ -1,7 +1,7 @@
 # Flask, MariaDB, Nginx Docker Application 
 [![Build Status](https://travis-ci.org/drewgallis/csec380-p1.svg?branch=master)](https://travis-ci.org/drewgallis/csec380-p1)
 
-This project is created by Drew Gallis, Nicholas Graca and Zack Cogswell for the class CSEC 380.
+This project is created by Drew Gallis and Nicholas Graca for the class CSEC 380.
 
 ## Documentation
 ### [Network Diagrams](https://github.com/drewgallis/csec380-p1/tree/master/Documentation/Network%20Diagrams)
