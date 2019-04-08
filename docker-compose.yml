@@ -22,4 +22,4 @@ services:
       MYSQL_ROOT_PASSWORD: test123
       MYSQL_DATABASE: mydb
     ports:
-      - "3306:3306"
+      - "33060:3306"

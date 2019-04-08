@@ -12,6 +12,14 @@ CREATE TABLE User (
     PRIMARY KEY(id)
 );
 
+CREATE TABLE tmpUser (
+    id_tmp INT NOT NULL AUTO_INCREMENt,
+    username VARCHAR(20) NOT NULL ,
+    password VARCHAR(255) NOT NULL ,
+    valid_login BOOLEAN NOT NULL DEFAULT False,
+    PRIMARY KEY(id_tmp)
+);
+
 CREATE TABLE VideoStats (
     id INT NOT NULL ,
     username VARCHAR(20) NOT NULL ,

@@ -161,11 +161,61 @@ def login():
     output = "Insert Valid Username and Password to Login"
     return render_template('login.html', output=output)
 
-
+# still need to implement
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return redirect(url_for('login'))
+
+@app.route('/sql_injection', methods=['GET', 'POST'])
+def sql_injection():
+    session['username'] = None
+    result = "Nothing"
+    if request.method == 'POST':
+        if request.form['Button'] == 'Login':
+            username  = request.form['username']
+            password  = request.form['password']
+            connection = getMysqlConnection()
+            cursor = connection.cursor()
+            sql =  'SELECT * FROM tmpUser WHERE `username` ="' + username + '" AND `password` ="' + password + '"'
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            cursor.close()
+            connection.close()
+            password_db = result[2]
+            if password_db == password:
+                output = "Succesfully Inserted Correct Credentials"
+                return render_template('sql_injection.html', output=output)
+            output = result
+            return render_template('sql_injection.html', output=output)
+    output = result
+    return render_template('sql_injection.html', output=output)
+
+@app.route('/sql_add_tmp', methods=['GET', 'POST'])
+def sql_tmpuser():
+    if request.method == 'POST':
+        if request.form['Button'] == 'CreateUser':
+            username = request.form['username']
+            password = request.form['password']
+            if not ifExists(username):
+                connection = getMysqlConnection()
+                cursor = connection.cursor()
+                sql = "INSERT INTO `tmpUser` (`username`, `password`) VALUES (%s, %s)"
+                cursor.execute(sql, (username, password))
+                connection.commit()
+                cursor.close()
+                connection.close()
+                output = "User " + username + " sucessfully added"
+                return render_template('sql_adduser.html', output=output)
+            else:
+                output = "User " + username + " already exists"
+                return render_template('sql_adduser.html', output=output)
+        elif request.form['Button'] == 'BackToSql':
+            output = "Insert Valid Username and Password to Login"
+            return render_template('sql_injection.html', output=output)
+    output = "Start by Adding Credentials"
+    return render_template('sql_adduser.html', output=output)
+
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(12)

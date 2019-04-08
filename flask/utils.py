@@ -51,7 +51,7 @@ def check_password(pw_hash, password):
     return check_password_hash(pw_hash, password)
 
 def getMysqlConnection():
-    return mysql.connector.connect(user='root', host='172.17.0.1', port='3306', password='test123', database='mydb')
+    return mysql.connector.connect(user='root', host='172.17.0.1', port='33060', password='test123', database='mydb')
 
 def ifExists(username):
     connection = getMysqlConnection()
