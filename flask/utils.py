@@ -63,3 +63,23 @@ def ifExists(username):
     if result:
         return True
     return False
+ 
+ def delete_video(username, video):
+    #Check database to see if the user has this video
+    #We store the path to the video so if video is just the name add /Videos/username/ to video
+    video_name = "/Videos/" + str(username) + "/" + str(video)
+    connection = getMysqlConnection()
+    cursor = connection.cursor()
+    sql = "SELECT `video_name` FROM `VideoStats` WHERE `username`=%s AND `video_name`=%s"
+    cursor.execute(sql, (username, video_name))
+    result = cursor.fetchone()
+    connection.close()
+    if result:
+        #Delete the video in the database and in /Videos/username
+        connection = getMysqlConnection()
+        cursor = connection.cursor()
+        sql = "DELETE FROM `VideoStats` WHERE `username`=%s AND video_name=%s"
+        cursor.execute(sql, (username, video_name))
+        os.remove(video_name)
+        return True
+    return False
