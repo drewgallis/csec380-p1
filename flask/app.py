@@ -7,7 +7,7 @@ from utils import *
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = "/etc/Videos"
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 
@@ -163,13 +163,31 @@ def login():
     return render_template('login.html', output=output)
 
 # still need to implement
+@app.route('/uploads')
+def all_videos():
+    if session.get('logged_in') == True and session.get('username') != None:
+        full_path = os.path.join(app.config['UPLOAD_FOLDER'])
+        files = os.listdir(full_path)
+        return render_template("uploads.html", output = files)
+    return redirect(url_for('login'))
+
+# still need to implement  
+@app.route('/uploads/<username>')
+def user_videos(username=None):
+    if session.get('logged_in') == True and session.get('username') != None:
+        full_path = os.path.join(app.config['UPLOAD_FOLDER'], username)
+        files = os.listdir(full_path)
+        return render_template("uploads.html", output = files)
+    return redirect(url_for('login'))
+
+# still need to implement
 @app.route('/search')
 def search():
     if session.get('logged_in') == True and session.get('username') != None:
         result = get_users()
-        return render_template('test.html', result=result)
+        return render_template('test.html', output=result)
+    return redirect(url_for('login'))
 
-# still need to implement
 @app.route('/logout')
 def logout():
     if session.get('logged_in') == True and session.get('username') != None:
@@ -178,80 +196,84 @@ def logout():
 
 @app.route('/sql_classic', methods=['GET', 'POST'])
 def sql_classic():
-    session['username'] = None
-    result = "Nothing"
-    if request.method == 'POST':
-        if request.form['Button'] == 'Login':
-            username  = request.form['username']
-            password  = request.form['password']
-            connection = getMysqlConnection()
-            cursor = connection.cursor()
-            sql =  'SELECT * FROM tmpUser WHERE `username` ="' + username + '" AND `password` ="' + password + '"'
-            cursor.execute(sql)
-            result = cursor.fetchone()
-            cursor.close()
-            connection.close()
-            password_db = result[2]
-            if password_db == password:
-                output = "Succesfully Inserted Correct Credentials"
+    if session.get('logged_in') == True and session.get('username') != None:
+        result = "Nothing"
+        if request.method == 'POST':
+            if request.form['Button'] == 'Login':
+                username  = request.form['username']
+                password  = request.form['password']
+                connection = getMysqlConnection()
+                cursor = connection.cursor()
+                sql =  'SELECT * FROM tmpUser WHERE `username` ="' + username + '" AND `password` ="' + password + '"'
+                cursor.execute(sql)
+                result = cursor.fetchone()
+                cursor.close()
+                connection.close()
+                password_db = result[2]
+                if password_db == password:
+                    output = "Succesfully Inserted Correct Credentials"
+                    return render_template('sql_classic.html', output=output)
+                output = result
                 return render_template('sql_classic.html', output=output)
-            output = result
-            return render_template('sql_classic.html', output=output)
-    output = result
-    return render_template('sql_classic.html', output=output)
+        output = result
+        return render_template('sql_classic.html', output=output)
+    return redirect(url_for('login'))
 
 @app.route('/sql_blind', methods=['GET', 'POST'])
 def sql_blind():
-    session['username'] = None
-    result = "Nothing"
-    if request.method == 'POST':
-        if request.form['Button'] == 'Login':
-            username  = request.form['username']
-            password  = request.form['password']
-            connection = getMysqlConnection()
-            cursor = connection.cursor()
-            sql =  'SELECT * FROM tmpUser WHERE `username` ="' + username + '" AND `password` ="' + password + '"'
-            try:
-                cursor.execute(sql)
-            except:
-                output = 'Nothing'
+    if session.get('logged_in') == True and session.get('username') != None:
+        result = "Nothing"
+        if request.method == 'POST':
+            if request.form['Button'] == 'Login':
+                username  = request.form['username']
+                password  = request.form['password']
+                connection = getMysqlConnection()
+                cursor = connection.cursor()
+                sql =  'SELECT * FROM tmpUser WHERE `username` ="' + username + '" AND `password` ="' + password + '"'
+                try:
+                    cursor.execute(sql)
+                except:
+                    output = 'Nothing'
+                    return render_template('sql_blind.html', output=output)
+                result = cursor.fetchone()
+                cursor.close()
+                connection.close()
+                password_db = result[2]
+                if password_db == password:
+                    output = "Succesfully Inserted Correct Credentials"
+                    return render_template('sql_blind.html', output=output)
+                output = result
                 return render_template('sql_blind.html', output=output)
-            result = cursor.fetchone()
-            cursor.close()
-            connection.close()
-            password_db = result[2]
-            if password_db == password:
-                output = "Succesfully Inserted Correct Credentials"
-                return render_template('sql_blind.html', output=output)
-            output = result
-            return render_template('sql_blind.html', output=output)
-    output = result
-    return render_template('sql_blind.html', output=output)
+        output = result
+        return render_template('sql_blind.html', output=output)
+    return redirect(url_for('login'))
 
 @app.route('/sql_add_tmp', methods=['GET', 'POST'])
 def sql_tmpuser():
-    if request.method == 'POST':
-        if request.form['Button'] == 'CreateUser':
-            username = request.form['username']
-            password = request.form['password']
-            if not ifExists(username):
-                connection = getMysqlConnection()
-                cursor = connection.cursor()
-                sql = "INSERT INTO `tmpUser` (`username`, `password`) VALUES (%s, %s)"
-                cursor.execute(sql, (username, password))
-                connection.commit()
-                cursor.close()
-                connection.close()
-                output = "User " + username + " sucessfully added"
-                return render_template('sql_adduser.html', output=output)
-            else:
-                output = "User " + username + " already exists"
-                return render_template('sql_adduser.html', output=output)
-        elif request.form['Button'] == 'BackToSql':
-            output = "Insert Valid Username and Password to Login"
-            return render_template('sql_classic.html', output=output)
-    output = "Start by Adding Credentials"
-    return render_template('sql_adduser.html', output=output)
+    if session.get('logged_in') == True and session.get('username') != None:
+        if request.method == 'POST':
+            if request.form['Button'] == 'CreateUser':
+                username = request.form['username']
+                password = request.form['password']
+                if not ifExists(username):
+                    connection = getMysqlConnection()
+                    cursor = connection.cursor()
+                    sql = "INSERT INTO `tmpUser` (`username`, `password`) VALUES (%s, %s)"
+                    cursor.execute(sql, (username, password))
+                    connection.commit()
+                    cursor.close()
+                    connection.close()
+                    output = "User " + username + " sucessfully added"
+                    return render_template('sql_adduser.html', output=output)
+                else:
+                    output = "User " + username + " already exists"
+                    return render_template('sql_adduser.html', output=output)
+            elif request.form['Button'] == 'BackToSql':
+                output = "Insert Valid Username and Password to Login"
+                return render_template('sql_classic.html', output=output)
+        output = "Start by Adding Credentials"
+        return render_template('sql_adduser.html', output=output)
+    return redirect(url_for('login'))
 
 
 if __name__ == '__main__':

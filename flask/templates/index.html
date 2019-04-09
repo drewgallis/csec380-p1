@@ -16,7 +16,11 @@
 				<div class="inner">
 					<nav>
 						<ul>
-							<li><a href="../">Main Page</a></li>
+							<li><a href="../">Video Upload Page</a></li>
+							<li><a href="../sql_classic">SQL (Classic Injection)</a></li>
+							<li><a href="../sql_blind">SQL (Blind Injection)</a></li>
+							<li><a href="../sql_add_tmp">SQL (Add Temp User)</a></li>
+							<li><a href="../logout">Logout</a></li>
 						</ul>
 					</nav>
 				</div>
@@ -31,18 +35,25 @@
 							{% if output %}
 							<p class=output><strong>Console:</strong> {{ output }}
 							{% endif %}
-            				<p>Welcome to the home page!</p>
-							<h1>Upload new File</h1>
-    					<form method=post enctype=multipart/form-data action="/">
-								<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+						<form method=post enctype=multipart/form-data action="/">
+							<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+							<h2>Choose Your Filename (Video Name)</h2>
+							<div class="col-6 col-12-xsmall">
+								<input type="text" name="filename" id="filename" value="" placeholder="Insert Your Filename" />
+							</div>
+						<br>
+							<h2>Pick Your Upload Method</h2>
 								<div class="col-6 col-12-xsmall">
+									<h3>File System Input</h2>
 									<input type=file name=file>
-									<input type="text" name="url" id="url" value="" placeholder="Insert URL" />
-									<input type="text" name="filename" id="filename" value="" placeholder="Insert Your Filename" />
-								</div>
-								<div class="col-12">
 									<ul class="actions">
 										<li><input type="submit" name= "Type" value="uploadfile" id="UploadFile" class="primary" /></li>
+									</ul>						
+								</div>
+								<div class="col-6 col-12-xsmall">
+									<h3>URL Input</h2>
+									<input type="text" name="url" id="url" value="" placeholder="Insert URL" />		
+									<ul class="actions">
 										<li><input type="submit" name= "Type" value="uploadurl" id="UploadURL" class="primary" /></li>
 									</ul>
 								</div>

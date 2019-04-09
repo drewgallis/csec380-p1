@@ -2,7 +2,7 @@
 
 <html>
 	<head>
-		<title>Login</title>
+		<title>Main Page</title>
 		<meta charset="utf-8" />
         <link rel="icon" type="image/png" href="/static/images/favicon.png">
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -16,7 +16,11 @@
 				<div class="inner">
 					<nav>
 						<ul>
-							<li><a href="../login">Login Page</a></li>
+							<li><a href="../">Video Upload Page</a></li>
+							<li><a href="../sql_classic">SQL (Classic Injection)</a></li>
+							<li><a href="../sql_blind">SQL (Blind Injection)</a></li>
+							<li><a href="../sql_add_tmp">SQL (Add Temp User)</a></li>
+							<li><a href="../logout">Logout</a></li>
 						</ul>
 					</nav>
 				</div>
@@ -28,31 +32,12 @@
 				<!-- Intro -->
 					<section id="intro" class="wrapper style1 fullscreen fade-up">
 						<div class="inner">
-                            {% if output %}
-                            <p class=output><strong>Console:</strong> {{ output }}
-                            {% endif %}
-							<!-- Form -->
-								<form method="post" action="/login">
-									<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-									<div class="row gtr-uniform">
-										<div class="col-6 col-12-xsmall">
-											<input type="text" name="username" id="username" value="" placeholder="User" />
-										</div>
-										<div class="col-6 col-12-xsmall">
-											<input type="password" name="password" id="password" value="" placeholder="Password" />
-										</div>
-										
-										<div class="col-12">
-											<ul class="actions">
-												<li><input type="submit" name= "Button" value="Login" id="Login" class="primary" /></li>
-												<li><input type="submit" name= "Button" value="CreateUser" id="CreateUser" class="primary" /></li>
-											</ul>
-										</div>
-									</div>
-								</form>
+							{% if output %}
+							<p class=output><strong>User Uploads:</strong> {{ output }}
+							{% endif %}
 						</div>
-					</section>		
-				
+					</section>
+
 			</div>
 		<!-- Scripts -->
 			<script src="/static/assets/js/jquery.min.js"></script>
