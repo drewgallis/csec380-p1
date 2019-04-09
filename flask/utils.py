@@ -17,6 +17,14 @@ def get_userid(username):
     connection.close()
     return str(result[0])
 
+def get_users():
+    connection = getMysqlConnection()
+    cursor = connection.cursor()
+    sql = "SELECT `username`,`url`,`video_name`,`time_stamp` FROM `VideoStats` LIMIT 50"
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    return result 
+    
 def download_url(url, path):
     r = requests.get(url, allow_redirects=True)
     with open(path, 'wb') as f:
