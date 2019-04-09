@@ -20,7 +20,7 @@ def get_userid(username):
 def get_users():
     connection = getMysqlConnection()
     cursor = connection.cursor()
-    sql = "SELECT `username`,`url`,`video_name`,`time_stamp` FROM `VideoStats` LIMIT 50"
+    sql = "SELECT `username`, `url`,`video_name`,`time_stamp` FROM `VideoStats` LIMIT 50"
     cursor.execute(sql)
     result = cursor.fetchall()
     return result 
