@@ -31,13 +31,14 @@
 							{% if output %}
 							<p class=output><strong>Console:</strong> {{ output }}
 							{% endif %}
-            	<p>Welcome to the home page!</p>
+            				<p>Welcome to the home page!</p>
 							<h1>Upload new File</h1>
     					<form method=post enctype=multipart/form-data action="/">
 								<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-      					<input type=file name=file>
 								<div class="col-6 col-12-xsmall">
+									<input type=file name=file>
 									<input type="text" name="url" id="url" value="" placeholder="Insert URL" />
+									<input type="text" name="filename" id="filename" value="" placeholder="Insert Your Filename" />
 								</div>
 								<div class="col-12">
 									<ul class="actions">

@@ -64,7 +64,9 @@ def mainpage():
         output = "Upload Files and Videos"
         if request.method == 'POST':
             userid = int(get_userid(session.get('username')))
-            if request.form['Type'] == 'uploadfile':
+            file_name = request.form['filename']
+            output = " Please Insert a Valid Filename"
+            if request.form['Type'] == 'uploadfile' and file_name:
                 p = str(app.config['UPLOAD_FOLDER']) + '/' + str(session.get('username')) #make user specific path in Videos
                 if os.path.exists(p) != True:
                     os.mkdir(p)                 #Create user specific dir for user if it doesnt already exist
@@ -80,16 +82,16 @@ def mainpage():
                     filename = secure_filename(file.filename)
                     file.save(os.path.join(p, filename))                #p is path from above
                     timestamp = get_timestamp()
-                    sql = "INSERT INTO `VideoStats` (`id`,`username`, `video_name`,`time_stamp`) VALUES (%s, %s, %s, %s)"    #Add record of file upload to database
+                    sql = "INSERT INTO `VideoStats` (`id`,`username`, `url`, `video_name`,`time_stamp`) VALUES (%s, %s, %s, %s, %s)"    #Add record of file upload to database
                     connection = getMysqlConnection()
                     cursor = connection.cursor()
-                    cursor.execute(sql, (userid, str(session.get('username')), filename, timestamp))
+                    cursor.execute(sql, (userid, str(session.get('username')), filename, file_name, timestamp))
                     connection.commit()
                     cursor.close()
                     connection.close()
                     output = "Successfully Uploaded File: " + filename
                     return render_template('index.html', output=output)
-            if request.form['Type'] == 'uploadurl':
+            if request.form['Type'] == 'uploadurl' and file_name:
                 p = str(app.config['UPLOAD_FOLDER']) + '/' + str(session.get('username')) #make user specific path in Videos
                 if os.path.exists(p) != True:
                     os.mkdir(p)                 #Create user specific dir for user if it doesnt already exist
@@ -108,10 +110,10 @@ def mainpage():
                         filename = secure_filename(filename)
                         path = os.path.join(p, filename)
                         timestamp = get_timestamp()
-                        sql = "INSERT INTO `VideoStats` (`id`,`username`, `video_name`,`time_stamp`) VALUES (%s, %s, %s, %s)"    #Add record of file upload to database
+                        sql = "INSERT INTO `VideoStats` (`id`,`username`, `url`, `video_name`,`time_stamp`) VALUES (%s, %s, %s, %s, %s)"    #Add record of file upload to database
                         connection = getMysqlConnection()
                         cursor = connection.cursor()
-                        cursor.execute(sql, (userid, str(session.get('username')), filename, timestamp))
+                        cursor.execute(sql, (userid, str(session.get('username')), filename, file_name, timestamp))
                         connection.commit()
                         cursor.close()
                         connection.close()
@@ -161,13 +163,21 @@ def login():
     return render_template('login.html', output=output)
 
 # still need to implement
+@app.route('/search')
+def search():
+    if session.get('logged_in') == True and session.get('username') != None:
+        result = get_users()
+        return render_template('test.html', result=result)
+
+# still need to implement
 @app.route('/logout')
 def logout():
-    session.pop('username', None)
-    return redirect(url_for('login'))
+    if session.get('logged_in') == True and session.get('username') != None:
+        session.pop('username', None)
+        return redirect(url_for('login'))
 
 @app.route('/sql_classic', methods=['GET', 'POST'])
-def sql_class():
+def sql_classic():
     session['username'] = None
     result = "Nothing"
     if request.method == 'POST':
@@ -201,7 +211,11 @@ def sql_blind():
             connection = getMysqlConnection()
             cursor = connection.cursor()
             sql =  'SELECT * FROM tmpUser WHERE `username` ="' + username + '" AND `password` ="' + password + '"'
-            cursor.execute(sql)
+            try:
+                cursor.execute(sql)
+            except:
+                output = 'Nothing'
+                return render_template('sql_blind.html', output=output)
             result = cursor.fetchone()
             cursor.close()
             connection.close()
