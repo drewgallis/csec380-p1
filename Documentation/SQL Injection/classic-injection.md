@@ -2,7 +2,7 @@
 
 Go to http://localhost:5000/sql_add_tmp to add a user to the tmp table for testing
 
-Then Navigate to http://10.0.0.19:5000/sql_injection for testing a classic injection attack
+Then Navigate to http://10.0.0.19:5000/sql_classic for testing a classic injection attack
 
 Since our sql statement is: ['SELECT * FROM tmpUser WHERE `username` ="' + username + '" AND `password` ="' + password + '"']
 
