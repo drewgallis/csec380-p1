@@ -64,7 +64,7 @@ def ifExists(username):
         return True
     return False
  
- def delete_video(username, video):
+def delete_video(username, video):
     #Check database to see if the user has this video
     #We store the path to the video so if video is just the name add /Videos/username/ to video
     video_name = "/Videos/" + str(username) + "/" + str(video)

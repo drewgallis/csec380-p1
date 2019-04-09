@@ -167,8 +167,8 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('login'))
 
-@app.route('/sql_injection', methods=['GET', 'POST'])
-def sql_injection():
+@app.route('/sql_classic', methods=['GET', 'POST'])
+def sql_class():
     session['username'] = None
     result = "Nothing"
     if request.method == 'POST':
@@ -185,11 +185,35 @@ def sql_injection():
             password_db = result[2]
             if password_db == password:
                 output = "Succesfully Inserted Correct Credentials"
-                return render_template('sql_injection.html', output=output)
+                return render_template('sql_classic.html', output=output)
             output = result
-            return render_template('sql_injection.html', output=output)
+            return render_template('sql_classic.html', output=output)
     output = result
-    return render_template('sql_injection.html', output=output)
+    return render_template('sql_classic.html', output=output)
+
+@app.route('/sql_blind', methods=['GET', 'POST'])
+def sql_blind():
+    session['username'] = None
+    result = "Nothing"
+    if request.method == 'POST':
+        if request.form['Button'] == 'Login':
+            username  = request.form['username']
+            password  = request.form['password']
+            connection = getMysqlConnection()
+            cursor = connection.cursor()
+            sql =  'SELECT * FROM tmpUser WHERE `username` ="' + username + '" AND `password` ="' + password + '"'
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            cursor.close()
+            connection.close()
+            password_db = result[2]
+            if password_db == password:
+                output = "Succesfully Inserted Correct Credentials"
+                return render_template('sql_blind.html', output=output)
+            output = result
+            return render_template('sql_blind.html', output=output)
+    output = result
+    return render_template('sql_blind.html', output=output)
 
 @app.route('/sql_add_tmp', methods=['GET', 'POST'])
 def sql_tmpuser():
