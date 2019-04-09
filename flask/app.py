@@ -7,6 +7,7 @@ from utils import *
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
@@ -201,7 +202,11 @@ def sql_blind():
             connection = getMysqlConnection()
             cursor = connection.cursor()
             sql =  'SELECT * FROM tmpUser WHERE `username` ="' + username + '" AND `password` ="' + password + '"'
-            cursor.execute(sql)
+            try:
+                cursor.execute(sql)
+            except:
+                output = 'Nothing'
+                return render_template('sql_blind.html', output=output)
             result = cursor.fetchone()
             cursor.close()
             connection.close()
