@@ -236,7 +236,7 @@ def sql_tmpuser():
                 return render_template('sql_adduser.html', output=output)
         elif request.form['Button'] == 'BackToSql':
             output = "Insert Valid Username and Password to Login"
-            return render_template('sql_injection.html', output=output)
+            return render_template('sql_classic.html', output=output)
     output = "Start by Adding Credentials"
     return render_template('sql_adduser.html', output=output)
 
