@@ -1,0 +1,38 @@
+https://github.com/stephenbradshaw/breakableflask/blob/master/breakableflask.py
+
+
+# os command injection
+@app.route('/lookup', methods = ['POST', 'GET'])
+def lookup():
+    address = None
+    if request.method == 'POST':
+        address = request.form['address']
+    return """
+    <html>
+       <body>""" + "Result:\n<br>\n" + (rp("nslookup " + address).replace('\n', '\n<br>')  if address else "") + """
+          <form action = "/lookup" method = "POST">
+             <p><h3>Enter address to lookup</h3></p>
+             <p><input type = 'text' name = 'address'/></p>
+             <p><input type = 'submit' value = 'Lookup'/></p>
+          </form>
+       </body>
+    </html>
+    """
+
+# code injection
+@app.route('/evaluate', methods = ['POST', 'GET'])
+def evaluate():
+    expression = None
+    if request.method == 'POST':
+        expression = request.form['expression']
+    return """
+    <html>
+       <body>""" + "Result: " + (str(eval(expression)).replace('\n', '\n<br>')  if expression else "") + """
+          <form action = "/evaluate" method = "POST">
+             <p><h3>Enter expression to evaluate</h3></p>
+             <p><input type = 'text' name = 'expression'/></p>
+             <p><input type = 'submit' value = 'Evaluate'/></p>
+          </form>
+       </body>
+    </html>
+    """
