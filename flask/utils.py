@@ -3,6 +3,7 @@ import datetime
 from flask import request
 import requests
 from werkzeug.security import generate_password_hash, check_password_hash
+import os
 
 UPLOAD_FOLDER = '/etc/Videos'
 ALLOWED_EXTENSIONS = set(['mp4', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'mov'])
