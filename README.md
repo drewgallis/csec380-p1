@@ -43,3 +43,6 @@ This project is created by Drew Gallis and Nicholas Graca for the class CSEC 380
 ## [Travis]()
 
 ## [Docker]()
+[Dockerfile](https://github.com/drewgallis/csec380-p1/blob/master/flask/Dockerfile) - The Dockerfile that runs everything
+
+[Docker Compose](https://github.com/drewgallis/csec380-p1/blob/master/docker-compose.yml) - The docker-compose file
