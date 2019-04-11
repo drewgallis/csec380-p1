@@ -6,4 +6,4 @@
 
 - What are the limitations, if any that, of the SQL Injection issues you’ve included? 
 
-**
+*In blind sql injection, you only get output if your comand is correct. If you happen to mess up the command you are injecting then it won't spit out any information.*
