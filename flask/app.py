@@ -1,9 +1,11 @@
-from flask import Flask, request, render_template, session, redirect, url_for
+from flask import Flask, request, render_template, session, redirect, url_for, render_template_string
 import socket, os, json
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.utils import secure_filename
-
 from utils import *
+
+from jinja2 import Environment #addition for RCE
+Jinja2 = Environment()  # addition for RCE
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
@@ -275,6 +277,28 @@ def sql_tmpuser():
         return render_template('sql_adduser.html', output=output)
     return redirect(url_for('login'))
 
+# 404 catch
+@app.errorhandler(404)
+def page_not_found(e):
+    page = request.base_url
+    ### 404 LOGGER ####
+    return render_template('404.html', page=page), 404
+
+# REMOTE CODE EXECUTION WORKING
+@app.route("/ssti") 
+def ssti():
+
+    name = request.values.get('name')
+    
+    # SSTI VULNERABILITY
+    # The vulnerability is introduced concatenating the
+    # user-provided `name` variable to the template string.
+    output = Jinja2.from_string('Hello ' + name + '!').render()
+    
+    # Instead, the variable should be passed to the template context.
+    # Jinja2.from_string('Hello {{name}}!').render(name = name)
+
+    return output
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(12)
