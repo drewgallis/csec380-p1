@@ -5,8 +5,8 @@ import requests
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
-UPLOAD_FOLDER = '/etc/Videos'
-ALLOWED_EXTENSIONS = set(['mp4', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'mov'])
+UPLOAD_FOLDER = '/app/static/Videos'
+ALLOWED_EXTENSIONS = set(['mp4', 'png', 'jpg', 'jpeg', 'gif', 'mov'])
 
 def get_userid(username):
     connection = getMysqlConnection()
@@ -25,6 +25,17 @@ def get_users():
     cursor.execute(sql)
     result = cursor.fetchall()
     return result 
+
+def get_video(file_name, username):
+    connection = getMysqlConnection()
+    cursor = connection.cursor()
+    sql = "SELECT `video_name` FROM `VideoStats` WHERE `url`=%s AND `username`=%s"
+    cursor.execute(sql,(file_name,username))
+    result = cursor.fetchall()
+    result = result[0]
+    result = result[0]
+    return result 
+    
     
 def download_url(url, path):
     r = requests.get(url, allow_redirects=True)
@@ -76,19 +87,22 @@ def ifExists(username):
 def delete_video(username, video):
     #Check database to see if the user has this video
     #We store the path to the video so if video is just the name add /Videos/username/ to video
-    video_name = "/Videos/" + str(username) + "/" + str(video)
     connection = getMysqlConnection()
     cursor = connection.cursor()
-    sql = "SELECT `video_name` FROM `VideoStats` WHERE `username`=%s AND `video_name`=%s"
-    cursor.execute(sql, (username, video_name))
+    sql = "SELECT `url` FROM `VideoStats` WHERE `username`=%s AND `video_name`=%s"
+    cursor.execute(sql, (username, video))
     result = cursor.fetchone()
+    result = result[0]
     connection.close()
+    video_name = "/app/static/Videos/" + str(username) + "/" + str(result)
     if result:
         #Delete the video in the database and in /Videos/username
         connection = getMysqlConnection()
         cursor = connection.cursor()
         sql = "DELETE FROM `VideoStats` WHERE `username`=%s AND video_name=%s"
-        cursor.execute(sql, (username, video_name))
+        cursor.execute(sql, (username, video))
+        connection.commit()
+        connection.close()
         os.remove(video_name)
         return True
     return False

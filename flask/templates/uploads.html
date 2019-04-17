@@ -17,6 +17,8 @@
 					<nav>
 						<ul>
 							<li><a href="../">Video Upload Page</a></li>
+							<li><a href="../search">Search Videos</a></li>
+							<li><a href="../uploads" style="color: #ffffff;">All Uploads</a></li>
 							<li><a href="../sql_classic">SQL (Classic Injection)</a></li>
 							<li><a href="../sql_blind">SQL (Blind Injection)</a></li>
 							<li><a href="../sql_add_tmp">SQL (Add Temp User)</a></li>
@@ -32,11 +34,63 @@
 				<!-- Intro -->
 					<section id="intro" class="wrapper style1 fullscreen fade-up">
 						<div class="inner">
+							{% if user is defined %}
+							<h2>{{user}}'s uploads</h2>
+							{% endif %}
 							{% if output %}
-							<p class=output><strong>User Uploads:</strong> {{ output }}
+							<p class=output><strong>Files Uploaded:</strong> {{ output }}</p>
+							{% endif %}
+							{% if users is defined %}
+							<h1>Users</h1>
+							<ul class="actions">
+								{% for username in users %}
+								<li><a href="./uploads/{{username}}" class="button">{{username}}</a></li>
+								{% endfor %}
+							</ul>
+							{% endif %}
+							
+						</div>
+					</section>
+					{% if user is defined %}
+					<section class="wrapper">
+                        <div class="inner">
+							{% if listVideos is defined %}
+							<h2>Videos</h2>
+							<div class="features">
+                                {% for video in listVideos %}
+								<section style="width: 100%">
+									<span class="icon major">{{ loop.index }}</span>
+									{% if canDelete == "true" %}
+									<a href="./delete/{{user}}/{{video['name']}}"><span class="icon major">fa-times</span></a>
+									{% endif %}
+									<h3>{{ video['name'] }}</h3>
+									<video width="622px" height="350px" controls="controls" type="video/mp4" preload="none">
+										<source src="{{ video['path'] }}" autostart="false">
+										Your browser does not support the video tag.
+									</video>
+								</section>
+								{% endfor %}
+							</div>
+							{% endif %}
+							{% if listImages is defined %}
+							<h2>Images</h2>
+							<div class="features">
+								{% for image in listImages %}
+									<section>
+										<span class="icon major">{{ loop.index }}</span>
+										{% if canDelete == "true" %}
+									<a href="./delete/{{user}}/{{image['name']}}"><span class="icon major">fa-times</span></a>
+									{% endif %}
+										<h3>{{ image['name'] }}</h3>
+										<img src="{{ image['path'] }}" style="max-height: 350px; width: auto;" alt="{{image}}"/>
+									</section>	
+								{% endfor %}
+							</div>
 							{% endif %}
 						</div>
 					</section>
+					{% endif %}
+			</div>
 
 			</div>
 		<!-- Scripts -->

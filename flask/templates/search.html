@@ -17,6 +17,8 @@
 					<nav>
 						<ul>
 							<li><a href="../">Video Upload Page</a></li>
+							<li><a href="../search" style="color: #ffffff;">Search Videos</a></li>
+							<li><a href="../uploads">All Uploads</a></li>
 							<li><a href="../sql_classic">SQL (Classic Injection)</a></li>
 							<li><a href="../sql_blind">SQL (Blind Injection)</a></li>
 							<li><a href="../sql_add_tmp">SQL (Add Temp User)</a></li>
@@ -34,6 +36,38 @@
 						<div class="inner">
 							{% if output %}
 							<p class=output><strong>Console:</strong> {{ output }}
+							{% endif %}
+							<form method="post" action="/search">
+								<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+								<div class="row gtr-uniform">
+									<div class="col-6 col-12-xsmall">
+										<input type="text" name="search_item" id="search_item" value="" placeholder="Search For Video Based on Name" />
+									<br>
+										<input type="submit" name= "Button" value="search" id="search" class="primary" />
+									</div>
+								</div>
+							</form>
+							{% if files is defined %}
+							{% for user in files %}
+							<a href="./uploads/{{user}}"><h3>{{ user }}</h3>
+								<table>
+									<thead>
+									<tr>
+										<th>Video Name</th>
+										<th>URL</th>
+									</tr>
+									</thead>
+									<tbody>
+										{% for video in files[user] %}
+											<tr>
+												<td>{{video['name']}}</td>
+												<td>{{video['url']}}</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</a>
+							{% endfor %}
 							{% endif %}
 						</div>
 					</section>

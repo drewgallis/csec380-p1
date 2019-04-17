@@ -9,7 +9,7 @@ services:
     container_name: flask-app
     build: ./flask/
     volumes:
-      - ./flask/Videos:/etc/Videos:rw
+      - ./flask/static/Videos:/app/static/Videos:rw
     ports:
       - "5000:5000"
     links:

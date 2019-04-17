@@ -9,7 +9,8 @@ Jinja2 = Environment()  # addition for RCE
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
-app.config['UPLOAD_FOLDER'] = "/etc/Videos"
+app.config['WEB_DIRECTORY'] = "/static/Videos"
+app.config['OS_UPLOAD'] = "/app/static/Videos"
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 
@@ -49,8 +50,7 @@ def adduser():
                 connection.commit()
                 cursor.close()
                 connection.close()
-                output = "User " + username + " sucessfully added"
-                return render_template('newuser.html', output=output)
+                return redirect(url_for('login'))
             else:
                 output = "User " + username + " already exists"
                 return render_template('newuser.html', output=output)
@@ -64,22 +64,23 @@ def adduser():
 def mainpage():
     if session.get('logged_in') == True and session.get('username') != None:
         output = "Upload Files and Videos"
+        username = session.get('username')
         if request.method == 'POST':
             userid = int(get_userid(session.get('username')))
             file_name = request.form['filename']
             output = " Please Insert a Valid Filename"
             if request.form['Type'] == 'uploadfile' and file_name:
-                p = str(app.config['UPLOAD_FOLDER']) + '/' + str(session.get('username')) #make user specific path in Videos
+                p = str(app.config['OS_UPLOAD']) + '/' + str(session.get('username')) #make user specific path in Videos
                 if os.path.exists(p) != True:
                     os.mkdir(p)                 #Create user specific dir for user if it doesnt already exist
                     # check if the post request has the file part
                 if 'file' not in request.files:
                     output = "No file part"
-                    return render_template('index.html', output=output)
+                    return render_template('index.html', output=output, username=username)
                 file = request.files['file']
                 if file.filename == '':
                     output = "No selected file"
-                    return render_template('index.html', output=output)
+                    return render_template('index.html', output=output, username=username)
                 if file and allowed_file(file.filename):
                     filename = secure_filename(file.filename)
                     file.save(os.path.join(p, filename))                #p is path from above
@@ -92,14 +93,14 @@ def mainpage():
                     cursor.close()
                     connection.close()
                     output = "Successfully Uploaded File: " + filename
-                    return render_template('index.html', output=output)
+                    return render_template('index.html', output=output, username=username)
             if request.form['Type'] == 'uploadurl' and file_name:
-                p = str(app.config['UPLOAD_FOLDER']) + '/' + str(session.get('username')) #make user specific path in Videos
+                p = str(app.config['OS_UPLOAD']) + '/' + str(session.get('username')) #make user specific path in Videos
                 if os.path.exists(p) != True:
                     os.mkdir(p)                 #Create user specific dir for user if it doesnt already exist
                     if 'url'not in request.form:
                         output = "No file part"
-                        return render_template('index.html', output=output)
+                        return render_template('index.html', output=output, username=username)
                 url = request.form['url']
                 filename = None
                 if url != '':
@@ -107,7 +108,7 @@ def mainpage():
     	                filename = url.rsplit('/', 1)[1]
                     if url == '' or filename is None:
                         output = "No URL inputted or incorrect format"
-                        return render_template('index.html', output=output)
+                        return render_template('index.html', output=output, username=username)
                     if url and allowed_file(url):
                         filename = secure_filename(filename)
                         path = os.path.join(p, filename)
@@ -121,14 +122,14 @@ def mainpage():
                         connection.close()
                         if download_url(url, path):
                             output = "Successfully uploaded url: " + filename
-                            return render_template('index.html', output=output)
+                            return render_template('index.html', output=output, username=username)
                         output = "Could not upload url: " + filename
-                        return render_template('index.html', output=output)
+                        return render_template('index.html', output=output, username=username)
                     else:
-                        return render_template('index.html', output='Content not supported')
+                        return render_template('index.html', output='Content not supported', username=username)
                 else:
-                    return render_template('index.html', output='Please insert a URL')
-        return render_template('index.html', output=output)
+                    return render_template('index.html', output='Please insert a URL', username=username)
+        return render_template('index.html', output=output, username=username)
     else:
         return redirect(url_for('login'))
 
@@ -168,26 +169,83 @@ def login():
 @app.route('/uploads')
 def all_videos():
     if session.get('logged_in') == True and session.get('username') != None:
-        full_path = os.path.join(app.config['UPLOAD_FOLDER'])
-        files = os.listdir(full_path)
-        return render_template("uploads.html", output = files)
+        users = os.listdir("/app/static/Videos/")
+        return render_template("uploads.html", users = users)
     return redirect(url_for('login'))
 
 # still need to implement  
 @app.route('/uploads/<username>')
 def user_videos(username=None):
-    if session.get('logged_in') == True and session.get('username') != None:
-        full_path = os.path.join(app.config['UPLOAD_FOLDER'], username)
-        files = os.listdir(full_path)
-        return render_template("uploads.html", output = files)
+    if session["username"] == username:
+        listVideos=[]
+        listImages=[]
+        if session.get('logged_in') == True and session.get('username') != None:
+            full_path = os.path.join(app.config['WEB_DIRECTORY'], username)
+            files = os.listdir("/app/static/Videos/" + username)
+            for file_name in files:
+                video_name = get_video(file_name,username)
+                final_path = full_path + "/" + file_name
+                if ".mp4" in file_name or ".mov" in file_name:
+                    listVideos.append({"path": final_path, "name": video_name})
+                if ".jpg" in file_name or ".png" in file_name or ".jpeg" in file_name or ".gif" in file_name:
+                    listImages.append({"path": final_path, "name": video_name})
+            return render_template("uploads.html", output=files, listVideos=listVideos, listImages=listImages, user=username, canDelete="true")
+    else:
+        listVideos=[]
+        listImages=[]
+        if session.get('logged_in') == True and session.get('username') != None:
+            full_path = os.path.join(app.config['WEB_DIRECTORY'], username)
+            files = os.listdir("/app/static/Videos/" + username)
+            for file_name in files:
+                video_name = get_video(file_name,username)
+                final_path = full_path + "/" + file_name
+                if ".mp4" in file_name or ".mov" in file_name:
+                    listVideos.append({"path": final_path, "name": video_name})
+                if ".jpg" in file_name or ".png" in file_name or ".jpeg" in file_name or ".gif" in file_name:
+                    listImages.append({"path": final_path, "name": video_name})
+            return render_template("uploads.html", output=files, listVideos=listVideos, listImages=listImages, user=username, canDelete="false")
     return redirect(url_for('login'))
 
+@app.route('/uploads/delete/<user>/<path>')
+def delete_user_path(user, path): 
+    delete_video(user, path)
+    return redirect('/uploads/'+ user)
+
 # still need to implement
-@app.route('/search')
+@app.route('/search', methods=['GET', 'POST'])
 def search():
     if session.get('logged_in') == True and session.get('username') != None:
         result = get_users()
-        return render_template('test.html', output=result)
+        connection = getMysqlConnection()
+        cursor = connection.cursor()
+        sql = "SELECT `video_name`, `url`, `username` FROM `VideoStats`"
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        connection.close()
+        files = {}
+        videos = []
+        users = []
+        search_term = None
+        if request.method == 'POST':
+            if request.form['search_item'] != ' ':
+                search_term  = request.form['search_item']
+        # for user in result 
+        for value in result:
+            video_name= value[0]
+            url= value[1]
+            username= value[2]
+            if search_term is not None:
+                if search_term in video_name:
+                    if username not in users:
+                        files[username]= []
+                        users.append(username)
+                    files[username].append({"name":video_name, "url":url})
+            else:
+                if username not in users:
+                    files[username]= []
+                    users.append(username)
+                files[username].append({"name":video_name, "url":url})
+        return render_template('search.html', files=files)
     return redirect(url_for('login'))
 
 @app.route('/logout')
