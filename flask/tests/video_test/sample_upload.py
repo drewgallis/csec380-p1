@@ -38,9 +38,8 @@ def delete_video(firefox):
     try:
         firefox.get('http://localhost:5000/uploads/test123') # test against flask app
         print(firefox.page_source)
-        deleteBTN = firefox.find_element_by_id('deleteVideo')
+        deleteBTN = firefox.find_element_by_id('deleteImage')
         deleteBTN.click()
-        return True
     except:
         print("Failed to delete sample file")
     return
