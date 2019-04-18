@@ -61,7 +61,7 @@ def delete_video(firefox):
     return
 
 def main():
-    initDB()
+    #initDB()
     options = Options() # get firefox webdriver options
     options.add_argument('-headless') # run tests in headless mode CMD
     firefox = Firefox(firefox_options=options) # intialize firefox web driver
