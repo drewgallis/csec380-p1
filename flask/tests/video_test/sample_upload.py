@@ -23,7 +23,7 @@ def initDB():
     cursor.close()
     connection.close()
 
-def getlogin():
+def getlogin(firefox):
     firefox.get('http://localhost:5000/login') # test against flask app
     user = firefox.find_element_by_name('username')
     user.send_keys('test123')
@@ -38,17 +38,17 @@ def getlogin():
 def upload_video(firefox, video_name):
     firefox.get('http://localhost:5000/') # test against flask app
     print(firefox.page_source)
-    user = firefox.find_element_by_id('filename')
-    user.send_keys(str(video_name))
-    uploadBTN = firefox.find_element_by_id('file_path')
-    password.send_keys("C://luffytest.jpg")
+    filename = firefox.find_element_by_name('filename')
+    filename.send_keys(str(video_name))
+    file_path = firefox.find_element_by_name('file')
+    file_path.send_keys("C://luffytest.jpg")
     uploadBTN = firefox.find_element_by_id('UploadFile')
     uploadBTN.click()
     if "Successfully Uploaded File:" in firefox.page_source:
         print("Success Caught: File Uploaded Succesfully " + video_name)
     return
 
-def delete_video():
+def delete_video(firefox):
     try:
         firefox.get('http://localhost:5000/uploads/test123') # test against flask app
         deleteBTN = firefox.find_element_by_id('deleteVideo')
