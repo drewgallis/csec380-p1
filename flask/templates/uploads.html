@@ -61,7 +61,7 @@
 								<section style="width: 100%">
 									<span class="icon major">{{ loop.index }}</span>
 									{% if canDelete == "true" %}
-									<a href="./delete/{{user}}/{{video['name']}}"><span class="icon major">fa-times</span></a>
+									<a href="./delete/{{user}}/{{video['name']}}"><span class="icon major fa-trash"></span></a>
 									{% endif %}
 									<h3>{{ video['name'] }}</h3>
 									<video width="622px" height="350px" controls="controls" type="video/mp4" preload="none">
@@ -79,7 +79,7 @@
 									<section>
 										<span class="icon major">{{ loop.index }}</span>
 										{% if canDelete == "true" %}
-									<a href="./delete/{{user}}/{{image['name']}}"><span class="icon major">fa-times</span></a>
+									<a href="./delete/{{user}}/{{image['name']}}"><span class="icon major fa-trash"></span></a>
 									{% endif %}
 										<h3>{{ image['name'] }}</h3>
 										<img src="{{ image['path'] }}" style="max-height: 350px; width: auto;" alt="{{image}}"/>

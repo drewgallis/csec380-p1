@@ -65,14 +65,14 @@ def mainpage():
     if session.get('logged_in') == True and session.get('username') != None:
         output = "Upload Files and Videos"
         username = session.get('username')
+        p = str(app.config['OS_UPLOAD']) + '/' + str(session.get('username')) #make user specific path in Videos
+        if os.path.exists(p) != True:
+            os.mkdir(p)                 #Create user specific dir for user if it doesnt already exist
         if request.method == 'POST':
             userid = int(get_userid(session.get('username')))
             file_name = request.form['filename']
             output = " Please Insert a Valid Filename"
             if request.form['Type'] == 'uploadfile' and file_name:
-                p = str(app.config['OS_UPLOAD']) + '/' + str(session.get('username')) #make user specific path in Videos
-                if os.path.exists(p) != True:
-                    os.mkdir(p)                 #Create user specific dir for user if it doesnt already exist
                     # check if the post request has the file part
                 if 'file' not in request.files:
                     output = "No file part"
@@ -342,6 +342,12 @@ def page_not_found(e):
     ### 404 LOGGER ####
     return render_template('404.html', page=page), 404
 
+@app.errorhandler(500)
+def error_overload(e):
+    page = request.base_url
+    msg = e
+    return render_template('error/500.html', ip=ip, page=page, msg=msg), 500
+
 # REMOTE CODE EXECUTION WORKING
 @app.route("/ssti") 
 def ssti():
@@ -360,4 +366,4 @@ def ssti():
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(12)
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=False, host='0.0.0.0', port=5000)
