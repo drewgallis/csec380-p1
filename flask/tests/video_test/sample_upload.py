@@ -34,11 +34,13 @@ def getlogin(firefox):
     time.sleep(8)
     if "Main Page" in firefox.page_source:
         print("Success Caught: Valid User Login!")
+    time.sleep(8)
+    print(firefox.page_source)
+    upload_video(firefox, "LuffyBoi")
     return
 
 def upload_video(firefox, video_name):
     firefox.get('http://localhost:5000/') # test against flask app
-    print(firefox.page_source)
     time.sleep(8)
     filename = firefox.find_element_by_name('filename')
     filename.send_keys(str(video_name))
@@ -67,7 +69,6 @@ def main():
     options.add_argument('-headless') # run tests in headless mode CMD
     firefox = Firefox(firefox_options=options) # intialize firefox web driver
     getlogin(firefox)
-    upload_video(firefox, "LuffyBoi")
     delete_video(firefox)
     firefox.close()
 
