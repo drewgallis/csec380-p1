@@ -2,7 +2,7 @@ from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
 from werkzeug.security import generate_password_hash, check_password_hash
 import mysql.connector
-
+import time
 def get_hash(password):
     return generate_password_hash(password)
 
@@ -31,6 +31,7 @@ def getlogin(firefox):
     password.send_keys('test')
     loginbtn = firefox.find_element_by_id('Login')
     loginbtn.click()
+    time.sleep(8)
     if "Main Page" in firefox.page_source:
         print("Success Caught: Valid User Login!")
     return
@@ -38,6 +39,7 @@ def getlogin(firefox):
 def upload_video(firefox, video_name):
     firefox.get('http://localhost:5000/') # test against flask app
     print(firefox.page_source)
+    time.sleep(8)
     filename = firefox.find_element_by_name('filename')
     filename.send_keys(str(video_name))
     file_path = firefox.find_element_by_name('file')
@@ -49,6 +51,7 @@ def upload_video(firefox, video_name):
     return
 
 def delete_video(firefox):
+    time.sleep(8)
     try:
         firefox.get('http://localhost:5000/uploads/test123') # test against flask app
         deleteBTN = firefox.find_element_by_id('deleteVideo')
