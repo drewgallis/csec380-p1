@@ -3,6 +3,7 @@ from selenium.webdriver.firefox.options import Options
 from werkzeug.security import generate_password_hash, check_password_hash
 import mysql.connector
 import time
+import os
     
 def getMysqlConnection():
     return mysql.connector.connect(user='root', host='172.17.0.1', port='33060', password='test123', database='mydb')
@@ -26,7 +27,9 @@ def upload_video(firefox, video_name):
     filename = firefox.find_element_by_name('filename')
     filename.send_keys(str(video_name))
     file_path = firefox.find_element_by_name('file')
-    file_path.send_keys("luffytest.jpg")
+    os_path = os.getcwd()
+    final_path = os_path + "/luffy_test.jpg"
+    file_path.send_keys("./luffy_test.jpg")
     uploadBTN = firefox.find_element_by_id('UploadFile')
     uploadBTN.click()
     if "Successfully Uploaded File:" in firefox.page_source:
