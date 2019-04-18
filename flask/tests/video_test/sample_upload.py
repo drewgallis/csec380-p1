@@ -24,9 +24,6 @@ def initDB():
     connection.close()
 
 def getlogin():
-    options = Options() # get firefox webdriver options
-    options.add_argument('-headless') # run tests in headless mode CMD
-    firefox = Firefox(firefox_options=options) # intialize firefox web driver
     firefox.get('http://localhost:5000/login') # test against flask app
     user = firefox.find_element_by_name('username')
     user.send_keys('test123')
@@ -36,7 +33,7 @@ def getlogin():
     loginbtn.click()
     if "Main Page" in firefox.page_source:
         print("Success Caught: Valid User Login!")
-    return firefox
+    return
 
 def upload_video(firefox, video_name):
     firefox.get('http://localhost:5000/') # test against flask app
@@ -49,7 +46,7 @@ def upload_video(firefox, video_name):
     uploadBTN.click()
     if "Successfully Uploaded File:" in firefox.page_source:
         print("Success Caught: File Uploaded Succesfully " + video_name)
-    return firefox
+    return
 
 def delete_video():
     try:
@@ -59,13 +56,17 @@ def delete_video():
         return True
     except:
         print("Failed to delete sample file")
+    return
 
 def main():
     initDB()
-    firefox = getlogin()
+    options = Options() # get firefox webdriver options
+    options.add_argument('-headless') # run tests in headless mode CMD
+    firefox = Firefox(firefox_options=options) # intialize firefox web driver
+    getlogin(firefox)
     upload_video(firefox, "LuffyBoi")
-    validwebtest()  
-    delete_video()
+    delete_video(firefox)
+    firefox.close()
 
 if __name__ == "__main__":
     main()
