@@ -26,7 +26,7 @@ def upload_video(firefox, video_name):
     filename = firefox.find_element_by_name('filename')
     filename.send_keys(str(video_name))
     file_path = firefox.find_element_by_name('file')
-    file_path.send_keys("./luffytest.jpg")
+    file_path.send_keys("luffytest.jpg")
     uploadBTN = firefox.find_element_by_id('UploadFile')
     uploadBTN.click()
     if "Successfully Uploaded File:" in firefox.page_source:
@@ -44,7 +44,6 @@ def delete_video(firefox):
     return
 
 def main():
-    #initDB()
     options = Options() # get firefox webdriver options
     options.add_argument('-headless') # run tests in headless mode CMD
     firefox = Firefox(firefox_options=options) # intialize firefox web driver
