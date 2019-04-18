@@ -26,4 +26,5 @@ script:
   - python nginx/webtest.py
   - python flask/tests/basetest.py
   - python flask/tests/logintest.py
+  - python flask/tests/video_test/sample_upload.py
   - docker-compose logs
