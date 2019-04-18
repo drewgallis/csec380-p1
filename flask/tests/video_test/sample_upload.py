@@ -27,9 +27,7 @@ def upload_video(firefox, video_name):
     filename = firefox.find_element_by_name('filename')
     filename.send_keys(str(video_name))
     file_path = firefox.find_element_by_name('file')
-    os_path = os.getcwd()
-    final_path = os_path + "/luffy_test.jpg"
-    file_path.send_keys(final_path)
+    file_path.send_keys("./flask/tests/video_test/luffy_test.jpg")
     uploadBTN = firefox.find_element_by_id('UploadFile')
     uploadBTN.click()
     if "Successfully Uploaded File:" in firefox.page_source:
