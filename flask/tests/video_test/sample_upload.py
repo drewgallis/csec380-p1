@@ -35,11 +35,11 @@ def getlogin(firefox):
     if "Main Page" in firefox.page_source:
         print("Success Caught: Valid User Login!")
     time.sleep(8)
-    print(firefox.page_source)
     upload_video(firefox, "LuffyBoi")
     return
 
 def upload_video(firefox, video_name):
+    print(firefox.page_source)
     firefox.get('http://localhost:5000/') # test against flask app
     time.sleep(8)
     filename = firefox.find_element_by_name('filename')
