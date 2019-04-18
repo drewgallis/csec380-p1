@@ -40,6 +40,7 @@ def getlogin():
 
 def upload_video(firefox, video_name):
     firefox.get('http://localhost:5000/') # test against flask app
+    print(firefox.page_source)
     user = firefox.find_element_by_id('filename')
     user.send_keys(str(video_name))
     uploadBTN = firefox.find_element_by_id('file_path')
@@ -52,7 +53,7 @@ def upload_video(firefox, video_name):
 
 def delete_video():
     try:
-        firefox.get('http://localhost:5000/') # test against flask app
+        firefox.get('http://localhost:5000/uploads/test123') # test against flask app
         deleteBTN = firefox.find_element_by_id('deleteVideo')
         deleteBTN.click()
         return True
