@@ -19,6 +19,8 @@ def getlogin(firefox):
     time.sleep(5)
     if "Main Page" in firefox.page_source:
         print("Success Caught: Valid User Login!")
+    else:
+        print("Error Caught: User was not able to login...")
     return firefox
 
 def upload_video(firefox, video_name, file_name):
@@ -32,7 +34,9 @@ def upload_video(firefox, video_name, file_name):
     uploadBTN = firefox.find_element_by_id('UploadFile')
     uploadBTN.click()
     if "Successfully Uploaded File:" in firefox.page_source:
-        print("Success Caught: File Uploaded Succesfully " + video_name)
+        print("Success Caught: File Uploaded Succesfully: " + video_name)
+    else:
+        print("Error Caught: File Was Not Able To Upload: " + video_name)
     return firefox
 
 def delete_video(firefox, video_name):
@@ -40,9 +44,9 @@ def delete_video(firefox, video_name):
     firefox.get(path) # test against flask app
     print("Trying to delete image...")
     if video_name not in firefox.page_source:
-        print("Sucessfully Deleted File: " + video_name)
+        print("Success Caught: Deleted File Successfully: " + video_name)
     else:
-         print("Could NOT Deleted File: " + video_name)
+         print("Error Caught: Could NOT Deleted File: " + video_name)
     return firefox
 
 def main():
