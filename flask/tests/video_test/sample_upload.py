@@ -51,7 +51,7 @@ def main():
     firefox = Firefox(firefox_options=options) # intialize firefox web driver
     firefox = getlogin(firefox)
     firefox = upload_video(firefox, "LuffyBoi", "luffy_test.jpg")
-    firefox = upload_video(firefox, "Rabbit", "rabbit_test.jpg")
+    firefox = upload_video(firefox, "Rabbit", "rabbit_test.mp4")
     firefox = delete_video(firefox, "LuffyBoi")
     delete_video(firefox, "Rabbit")
     firefox.close()
