@@ -51,7 +51,7 @@ def classic(firefox):
     time.sleep(5)
     #print(firefox.page_source)
     if "Unread result found" in firefox.page_source:
-        print("Success Caught: Valid SQL Injection!")
+        print("Success Caught: Valid SQL Injection")
     return firefox
 
 def blind(firefox):
@@ -66,7 +66,7 @@ def blind(firefox):
     time.sleep(5)
     #print(firefox.page_source)
     if "Unread result found" in firefox.page_source:
-        print("Success Caught: SQL blind")
+        print("Success Caught: Valid SQL blind")
     return firefox
 
 def main():
