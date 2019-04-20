@@ -346,7 +346,7 @@ def page_not_found(e):
 def error_overload(e):
     page = request.base_url
     msg = e
-    return render_template('error/500.html', ip=ip, page=page, msg=msg), 500
+    return render_template('error/500.html', page=page, msg=msg), 500
 
 # REMOTE CODE EXECUTION WORKING
 @app.route("/ssti") 
