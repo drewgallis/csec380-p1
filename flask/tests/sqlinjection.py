@@ -2,6 +2,7 @@ from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
 from werkzeug.security import generate_password_hash, check_password_hash
 import mysql.connector
+import time
 
 def get_hash(password):
     return generate_password_hash(password)
@@ -46,6 +47,7 @@ def classic(firefox):
     password.send_keys('" or ""="')
     loginbtn = firefox.find_element_by_id('Login')
     loginbtn.click()
+    time.sleep(5)
     if "test123" in firefox.page_source:
         print("Success Caught: Valid SQL Injection!")
     return firefox
@@ -57,7 +59,8 @@ def blind(firefox):
     password = firefox.find_element_by_name('password')
     password.send_keys('" or ""="')
     loginbtn = firefox.find_element_by_id('Login')
-    loginbtn.click()
+    loginbtn.click()    
+    time.sleep(5)
     if "Login" in firefox.page_source:
         print("Success Caught: SQL blind")
     firefox.close()
