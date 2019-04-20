@@ -63,7 +63,7 @@ def blind(firefox):
     time.sleep(5)
     if "Login" in firefox.page_source:
         print("Success Caught: SQL blind")
-    firefox.close()
+    return firefox
 
 def main():
     initDB()
@@ -72,7 +72,7 @@ def main():
     firefox = Firefox(firefox_options=options) # intialize firefox web driver
     firefox = getlogin(firefox)
     firefox = classic(firefox)
-    blind(firefox)
+    firefox = blind(firefox)
     firefox.close()
 
 if __name__ == "__main__":
