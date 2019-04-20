@@ -34,8 +34,9 @@ def ssti(firefox):
         alert.accept()
         print("Success Caught: Valid Alert Screen")
         return firefox
-    print("Error Caught: No Valid Alert Screen Found")
-    return firefox
+    except:
+        print("Error Caught: No Valid Alert Screen Found")
+        return firefox
 
 def main():
     options = Options() # get firefox webdriver options
