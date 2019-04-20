@@ -33,7 +33,8 @@ def ssti(firefox):
         print("Success Caught: Alert text:" + alert.text)
         alert.accept()
         print("Success Caught: Valid Alert Screen")
-        return True
+        return firefox
+    print("Error Caught: No Valid Alert Screen Found")
     return firefox
 
 def main():
