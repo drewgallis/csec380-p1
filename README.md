@@ -20,6 +20,10 @@ This project is created by Drew Gallis and Nicholas Graca for the class CSEC 380
 
 [Activity 5 questions](https://github.com/drewgallis/csec380-p1/blob/master/Documentation/Questions/activity5.md) - Answers for Act 5 questions
 
+[Activity 6 questions](https://github.com/drewgallis/csec380-p1/blob/master/Documentation/Questions/activity6.md) - Answers for Act 6 questions
+
+[Activity 7 questions](https://github.com/drewgallis/csec380-p1/blob/master/Documentation/Questions/activity7.md) - Answers for Act 7 questions
+
 ### [Site Mock-Up](https://github.com/drewgallis/csec380-p1/tree/master/Documentation/Site%20Mock-UP)
 [Login Page](https://github.com/drewgallis/csec380-p1/blob/master/Documentation/Site%20Mock-Up/login%20page.pdf) - What we plan our login page to look like.
 
@@ -38,11 +42,9 @@ This project is created by Drew Gallis and Nicholas Graca for the class CSEC 380
 ## [MySQL](https://github.com/drewgallis/csec380-p1/tree/master/mysql)
 [Schema](https://github.com/drewgallis/csec380-p1/blob/master/mysql/schema.sql) - The configuration of our SQL server.
 
-## [Nginx](https://github.com/drewgallis/csec380-p1/tree/master/nginx)
+## [Nginx - Files](https://github.com/drewgallis/csec380-p1/tree/master/nginx)
 
-## [Travis]()
+## [Travis - File](https://github.com/drewgallis/csec380-p1/tree/master/.travis.yml)
 
-## [Docker]()
-[Dockerfile](https://github.com/drewgallis/csec380-p1/blob/master/flask/Dockerfile) - The Dockerfile that runs everything
-
-[Docker Compose](https://github.com/drewgallis/csec380-p1/blob/master/docker-compose.yml) - The docker-compose file
+## [Docker](https://www.docker.com/)
+[Docker Compose](https://github.com/drewgallis/csec380-p1/blob/master/docker-compose.yml) - The docker-compose file of our infastructure

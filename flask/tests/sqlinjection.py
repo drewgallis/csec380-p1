@@ -49,8 +49,8 @@ def classic(firefox):
     loginbtn = firefox.find_element_by_id('Login')
     loginbtn.click()
     time.sleep(5)
-    print(firefox.page_source)
-    if "test123" in firefox.page_source:
+    #print(firefox.page_source)
+    if "Unread result found" in firefox.page_source:
         print("Success Caught: Valid SQL Injection!")
     return firefox
 
@@ -64,8 +64,8 @@ def blind(firefox):
     loginbtn = firefox.find_element_by_id('Login')
     loginbtn.click()    
     time.sleep(5)
-    print(firefox.page_source)
-    if "Login" in firefox.page_source:
+    #print(firefox.page_source)
+    if "Unread result found" in firefox.page_source:
         print("Success Caught: SQL blind")
     return firefox
 
