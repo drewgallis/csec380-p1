@@ -26,12 +26,14 @@ def getlogin(firefox):
     return firefox
 
 def ssti(firefox):
+    print("Trying to perform Remote Code Execution..")
+    firefox.get('http://localhost:5000/ssti?name=drew<script>alert("hello")</script>') # test against flask app
     try:
-        print("Trying to perform Remote Code Execution..")
-        firefox.get('http://localhost:5000/ssti?name=drew<script>alert("hello")</script>') # test against flask app
-    except UnexpectedAlertPresentException:
-        print("Success Caught: Valid Alert Screen")
-    time.sleep(5)
+        alert = firefox.switch_to_alert()
+        print "Success Caught: Alert text:" + alert.text
+        alert.accept()
+        print("Success Caught: Valid Alert Screen")"
+        return True
     return firefox
 
 def main():
