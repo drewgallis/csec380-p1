@@ -27,4 +27,5 @@ script:
   - python flask/tests/basetest.py
   - python flask/tests/logintest.py
   - python flask/tests/video_test/sample_upload.py
+  - python flask/tests/sqlinjection.py
   - docker-compose logs
