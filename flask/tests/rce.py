@@ -32,7 +32,7 @@ def ssti(firefox):
         alert = firefox.switch_to_alert()
         print("Success Caught: Alert text:" + alert.text)
         alert.accept()
-        print("Success Caught: Valid Alert Screen")"
+        print("Success Caught: Valid Alert Screen")
         return True
     return firefox
 
