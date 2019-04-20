@@ -72,7 +72,7 @@ def main():
     firefox = Firefox(firefox_options=options) # intialize firefox web driver
     firefox = getlogin(firefox)
     firefox = classic(firefox)
-    blind()
+    blind(firefox)
     firefox.close()
 
 if __name__ == "__main__":
