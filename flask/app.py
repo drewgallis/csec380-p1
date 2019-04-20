@@ -342,13 +342,14 @@ def page_not_found(e):
     ### 404 LOGGER ####
     return render_template('404.html', page=page), 404
 
+# 500 catch
 @app.errorhandler(500)
 def error_overload(e):
     page = request.base_url
     msg = e
     return render_template('500.html', page=page, msg=msg), 500
 
-# REMOTE CODE EXECUTION WORKING
+# Remote Code Execution / Gain Remote Shell Access through This
 @app.route("/ssti") 
 def ssti():
 

