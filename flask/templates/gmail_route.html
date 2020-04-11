@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="../static/assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="../static/assets/img/favicon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Personal Gam - Gmail API</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+        name='viewport' />
+
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+
+    <!-- CSS Files -->
+    <link href="../static/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../static/assets/css/now-ui-kit.css" rel="stylesheet" />
+
+</head>
+
+<body class="index-page sidebar-collapse">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-primary fixed-top">
+        <div class="container">
+            <div class="navbar-translate">
+                <a class="navbar-brand" href="/" rel="tooltip" title="Personal GAM Home Link" data-placement="bottom"
+                    target="_blank">
+                    Personal GAM - Gmail API
+                </a>
+                <button class="navbar-toggler navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navigation" aria-controls="navigation-index" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-bar top-bar"></span>
+                    <span class="navbar-toggler-bar middle-bar"></span>
+                    <span class="navbar-toggler-bar bottom-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse justify-content-end" id="navigation"
+                data-nav-image="./assets/img/blurred-image-1.jpg">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="now-ui-icons objects_key-25"></i>
+                            <p>Token Page</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/gdrive">
+                            <i class="now-ui-icons files_paper"></i>
+                            <p>Google Drive API</p>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/gmail">
+                            <i class="now-ui-icons business_badge"></i>
+                            <p>Gmail API</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/people">
+                            <i class="now-ui-icons users_single-02"></i>
+                            <p>People API</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/photos">
+                            <i class="now-ui-icons media-1_album"></i>
+                            <p>Photos API</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/calendar">
+                            <i class="now-ui-icons ui-1_calendar-60"></i>
+                            <p>Calendar API</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/tasks">
+                            <i class="now-ui-icons sport_user-run"></i>
+                            <p>Tasks API</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/adduser">
+                            <i class="now-ui-icons ui-1_simple-add"></i>
+                            <p>Add User</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/export">
+                            <i class="now-ui-icons arrows-1_cloud-download-93"></i>
+                            <p>Export Data</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">
+                            <p>Logout</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+    </nav>
+    <div class="col-md-12 ml-auto col-xl-12 mr-auto" style="padding-top: 120px;">
+        <p class=" category">Gmail Messages</p>
+        {% if result == "Get a Token First!" %}
+        <p> {{result}} </p>
+        {% else %}
+        <!-- Tabs with Background on Card -->
+        <form class="form" method="post" action="/gmail">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <input type="text" class="form-control" name="search" id="search" value=""
+                placeholder="search for a email" />
+            <input type="submit" name="Button" value="search" id="search"
+                class="btn btn-primary btn-round btn-lg btn-block">
+        </form>
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs justify-content-center" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#inbox" role="tab">
+                            Inbox Threads
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#message" role="tab">
+                            Message Threads
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#draft" role="tab">
+                            Draft Threads
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <!-- Tab panes -->
+                <div class="tab-content text-center">
+                    <div class="tab-pane active" id="inbox" role="tabpanel">
+                        {% for inbox_thread in inbox_threads%}
+                        {% for threads in inbox_thread["threads"] %}
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="tab-content text-center">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Object</th>
+                                                <th>Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>ID</td>
+                                                <td>{{threads["id"]}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>History ID</td>
+                                                <td>{{threads["historyId"]}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Snippet</td>
+                                                <td>{{threads["snippet"]}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <form class="form" method="post" action="/gmail">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                                        <input type="hidden" name="message_id" value="{{threads["id"]}}" />
+                                        <input type="submit" name="Button" value="Get Message Info" id="messageinfo"
+                                            class="btn btn-primary btn-round btn-lg btn-block" />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        </br>
+                        {% endfor %}
+                        {% endfor %}
+                    </div>
+                    <div class="tab-pane" id="message" role="tabpanel">
+                        {% for message_thread in message_threads %}
+                        {% for messages in message_thread["messages"] %}
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="tab-content text-center">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Object</th>
+                                                <th>Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tbody>
+                                            <tr>
+                                                <td>ID</td>
+                                                <td>{{messages["id"]}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Thread ID</td>
+                                                <td>{{messages["threadId"]}}</td>
+                                            </tr>
+                                        </tbody>
+                                        </tbody>
+                                    </table>
+                                    <form class="form" method="post" action="/gmail">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                                        <input type="hidden" name="message_id" value="{{messages["id"]}}" />
+                                        <input type="submit" name="Button" value="Get Message Info" id="messageinfo"
+                                            class="btn btn-primary btn-round btn-lg btn-block" />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        </br>
+                        {% endfor %}
+                        {% endfor %}
+                    </div>
+                    <div class="tab-pane" id="draft" role="tabpanel">
+                        {% for draft_thread in draft_threads %}
+                        {% for drafts in draft_thread["drafts"] %}
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="tab-content text-center">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Object</th>
+                                                <th>Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>id</td>
+                                                <td>{{drafts["id"]}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>message_id</td>
+                                                <td>{{drafts["message"]["id"]}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>message_threadID</td>
+                                                <td>{{drafts["message"]["threadId"]}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <form class="form" method="post" action="/gmail">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                                        <input type="hidden" name="message_id" value="{{drafts["message"]["id"]}}" />
+                                        <input type="submit" name="Button" value="Get Message Info" id="messageinfo"
+                                            class="btn btn-primary btn-round btn-lg btn-block" />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        </br>
+                        {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <!-- End Tabs on plain Card -->
+    </div>
+
+    <!--   Core JS Files   -->
+    <script src="../static/assets/js/core/jquery.min.js" type="text/javascript"></script>
+    <script src="../static/assets/js/core/popper.min.js" type="text/javascript"></script>
+    <script src="../static/assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+
+    <!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
+    <script src="../static/assets/js/plugins/bootstrap-switch.js"></script>
+
+    <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+    <script src="../static/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
+
+    <!--  Plugin for the DatePicker, full documentation here: https://github.com/uxsolutions/bootstrap-datepicker -->
+    <script src="../assets/js/plugins/bootstrap-datepicker.js" type="text/javascript"></script>
+
+    <!--  Google Maps Plugin    -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+
+
+    <!-- Control Center for Now Ui Kit: parallax effects, scripts for the example pages etc -->
+    <script src="../static/assets/js/now-ui-kit.js" type="text/javascript"></script>
+</body>
+
+</html>

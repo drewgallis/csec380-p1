@@ -6,7 +6,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="../static/assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="../static/assets/img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Personal Gam - Main Page</title>
+    <title>Personal Gam - Google Drive API</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
         name='viewport' />
 
@@ -27,7 +27,7 @@
             <div class="navbar-translate">
                 <a class="navbar-brand" href="/" rel="tooltip" title="Personal GAM Home Link" data-placement="bottom"
                     target="_blank">
-                    Personal GAM - Token Page
+                    Personal GAM - Google Drive API
                 </a>
                 <button class="navbar-toggler navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navigation" aria-controls="navigation-index" aria-expanded="false"
@@ -40,13 +40,13 @@
             <div class="collapse navbar-collapse justify-content-end" id="navigation"
                 data-nav-image="./assets/img/blurred-image-1.jpg">
                 <ul class="navbar-nav">
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="/">
                             <i class="now-ui-icons objects_key-25"></i>
                             <p>Token Page</p>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="/gdrive">
                             <i class="now-ui-icons files_paper"></i>
                             <p>Google Drive API</p>
@@ -102,21 +102,75 @@
                 </ul>
             </div>
     </nav>
-    <div class="page-header clear-filter" filter-color="orange">
-        <div class="page-header-image" style="background-image:url(../static/assets/img/bg11.jpg)"></div>
-        <div class="container">
-            <form class="form" method="post" action="/">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-                <div class="card-header text-center">
-                    {% if result %}
-                    <p><strong>Token:</strong></p>
-                    <p style="word-wrap: normal;">{{ result }}</p>
-                    {% endif %}
-                    <input type="submit" name="Button" value="Grab a token" id="token"
-                        class="btn btn-primary btn-round btn-lg btn-block" />
+    <div class="container">
+        <div class="col-md-12 ml-auto col-xl-12 mr-auto" style="padding-top: 120px;">
+            <p class="category">Google Drive Files</p>
+            {% if full_result == "Get a Token First!" %}
+            <p> {{full_result}} </p>
+            {% else %}
+            <div class="card">
+                <div class="card-body">
+                    <!-- Tab panes -->
+                    <form class="form" method="post" action="/gdrive">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                        <input type="text" class="form-control" name="search" id="search" value=""
+                            placeholder="search for a file" />
+                        <input type="submit" name="Button" value="search" id="search"
+                            class="btn btn-primary btn-round btn-lg btn-block">
+                    </form>
                 </div>
-            </form>
+            </div>
+            {% for result in full_result %}
+            {% for value in result["files"] %}
+            <!-- Tabs with Background on Card -->
+            <div class="card">
+                <div class="card-body">
+                    <!-- Tab panes -->
+                    <div class="tab-content text-center">
+                        <div class="tab-pane active" id="info{{value['id']}}" role="tabpanel">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Object</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Kind</td>
+                                        <td>{{value["kind"]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ID</td>
+                                        <td>{{value["id"]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>File Name</td>
+                                        <td>{{value["name"]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>mimeType</td>
+                                        <td>{{value["mimeType"]}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <form class="form" method="post" action="/gdrive">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                                <input type="hidden" name="file_id" value="{{value["id"]}}" />
+                                <input type="hidden" name="file_name" value="{{value["name"]}}" />
+                                <input type="submit" name="Button" value="Get File Info" id="fileinfo"
+                                    class="btn btn-primary btn-round btn-lg btn-block" />
+                            </form>
+                            </br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endfor %}
+            {% endif %}
         </div>
+        <!-- End Tabs on plain Card -->
     </div>
 
     <!--   Core JS Files   -->

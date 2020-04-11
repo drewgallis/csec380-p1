@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Main Page</title>
+		<meta charset="utf-8" />
+        <link rel="icon" type="image/png" href="/static/images/favicon.png">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="/static/assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="/static/assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Sidebar -->
+			<section id="sidebar">
+				<div class="inner">
+					<nav>
+						<ul>
+							<li><a href="../uploads/{{username}}">Your Uploads</a></li>
+							<li><a href="../" style="color: #ffffff;">Video Upload Page</a></li>
+							<li><a href="../search">Search Videos</a></li>
+							<li><a href="../uploads">All Uploads</a></li>
+							<li><a href="../sql_classic">SQL (Classic Injection)</a></li>
+							<li><a href="../sql_blind">SQL (Blind Injection)</a></li>
+							<li><a href="../sql_add_tmp">SQL (Add Temp User)</a></li>
+							<li><a href="../logout">Logout</a></li>
+						</ul>
+					</nav>
+				</div>
+			</section>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Intro -->
+					<section id="intro" class="wrapper style1 fullscreen fade-up">
+						<div class="inner">
+							{% if output %}
+							<p class=output><strong>Console:</strong> {{ output }}
+							{% endif %}
+						<form method=post enctype=multipart/form-data action="/">
+							<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+							<h2>Choose Your Filename (Video Name)</h2>
+							<div class="col-6 col-12-xsmall">
+								<input type="text" name="filename" id="filename" value="" placeholder="Insert Your Filename" />
+							</div>
+						<br>
+							<h2>Pick Your Upload Method</h2>
+								<div class="col-6 col-12-xsmall">
+									<h3>File System Input</h2>
+									<input type=file name=file id="file">
+									<ul class="actions">
+										<li><input type="submit" name= "Type" value="uploadfile" id="UploadFile" class="primary" /></li>
+									</ul>						
+								</div>
+								<div class="col-6 col-12-xsmall">
+									<h3>URL Input</h2>
+									<input type="text" name="url" id="url" value="" placeholder="Insert URL" />		
+									<ul class="actions">
+										<li><input type="submit" name= "Type" value="uploadurl" id="UploadURL" class="primary" /></li>
+									</ul>
+								</div>
+    					</form>
+						</div>
+					</section>
+
+			</div>
+		<!-- Scripts -->
+			<script src="/static/assets/js/jquery.min.js"></script>
+			<script src="/static/assets/js/jquery.scrollex.min.js"></script>
+			<script src="/static/assets/js/jquery.scrolly.min.js"></script>
+			<script src="/static/assets/js/browser.min.js"></script>
+			<script src="/static/assets/js/breakpoints.min.js"></script>
+			<script src="/static/assets/js/util.js"></script>
+			<script src="/static/assets/js/main.js"></script>
+
+	</body>
+</html>
