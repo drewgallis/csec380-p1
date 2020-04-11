@@ -1,4 +1,0 @@
-requests
-Flask
-Flask-WTF
-mysql-connector

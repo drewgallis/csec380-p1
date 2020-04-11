@@ -1,21 +1,27 @@
-version: "3.3"
+version: "3"
 services:
-  flaskserv:
-    build: ./flask
+  nginx-web1:
+    container_name: nginx-web
+    build: ./nginx/
     ports:
-      - "5555:5555"
+      - "81:80"
+  flask-login:
+    container_name: flask-app
+    build: ./flask/
+    volumes:
+      - ./flask/static/Videos:/app/static/Videos:rw
+    ports:
+      - "5000:5000"
     links:
       - "mariadb"
   mariadb:
-    image: mariadb:10
+    image: mariadb
     container_name: mariadb
     volumes:
       - ./mysql/data:/var/lib/mysql:rw
       - ./mysql/schema.sql:/docker-entrypoint-initdb.d/schema.sql
     environment:
-      MYSQL_ROOT_PASSWORD: RobClem19920902_
+      MYSQL_ROOT_PASSWORD: test123
       MYSQL_DATABASE: mydb
     ports:
-      - "3306:3306"
-
-  
+      - "33060:3306"
