@@ -5,7 +5,7 @@
 #
 
 # Pulling latest nginx image
-FROM nginx:alpine
+FROM nginx:1.23.2-alpine
 
 # Updating index file with correct html file
 COPY index.html /usr/share/nginx/html/
